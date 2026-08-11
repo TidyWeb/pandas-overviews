@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A visual overview of Code Institute Pandas Topic 7: Initial Data Exploration.">
+  <title>Pandas Topic 07 — Initial Data Exploration · Pandas Reference Style</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root{--canvas:#e9f0f2;--paper:#fffaf0;--ink:#17324d;--muted:#536a78;--line:#bfd0d7;--rail:#17212b;--rail-text:#dce9ee;--rail-muted:#a8c0ca;--blue:#1f4f82;--cyan:#168aad;--gold:#f4a261;--green:#4f8f6b;--coral:#d95d39;--code:#102432;--white:#fff}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{display:grid;grid-template-columns:238px minmax(0,1fr);min-height:100vh;margin:0;color:var(--ink);background-color:var(--canvas);background-image:linear-gradient(rgba(23,50,77,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(23,50,77,.045) 1px,transparent 1px);background-size:24px 24px;font:16px/1.6 Arial,Helvetica,sans-serif}.shell{width:min(1040px,calc(100% - 72px));margin:0 auto}code,.mono,pre,nav,.eyebrow,.label,th,.section-no{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}a{color:#086b88;text-underline-offset:3px}a:hover{color:var(--coral)}
+    .rail{position:sticky;top:0;height:100vh;grid-row:span 4;overflow-y:auto;padding:30px 22px;background:var(--rail);color:var(--rail-text)}.rail-mark{display:grid;place-items:center;width:54px;height:54px;margin-bottom:18px;border:2px solid var(--cyan);border-radius:50%;color:var(--gold);font:700 18px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.rail h2{margin:0 0 6px;color:var(--white);font:700 21px/1.15 Arial,Helvetica,sans-serif}.rail p{margin:0}.rail-intro,.rail-note{color:var(--rail-muted);font-size:12px;line-height:1.55}.rail-intro{margin-bottom:22px}.rail-label{margin:20px 0 7px;color:var(--rail-muted);font:600 10px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.12em;text-transform:uppercase}.rail nav{border-top:1px solid rgba(255,255,255,.12)}.rail nav a{display:flex;gap:9px;align-items:baseline;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.07);color:var(--rail-text);font-size:12px;line-height:1.3;text-decoration:none}.rail nav .num{width:20px;flex-shrink:0;color:var(--rail-muted);font:600 10px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.rail-note{margin-top:24px;padding-top:16px;border-top:1px solid rgba(255,255,255,.12)}
+    header,nav,main,footer{grid-column:2}header{padding:48px 0 40px;background:var(--paper);border-bottom:2px solid #e0e7e8}.eyebrow,.label,.section-no{margin:0;color:var(--cyan);font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase}h1,h2,h3{margin:0;font-family:Arial,Helvetica,sans-serif}h1{max-width:760px;margin-top:10px;color:var(--blue);font-size:clamp(2.3rem,5vw,3.6rem);line-height:1.04}h1 em,h2 em{color:var(--cyan);font-style:normal;font-weight:400}.lede{max-width:800px;margin:18px 0 0;color:var(--muted);font-size:17px;line-height:1.75}.hero-note{max-width:850px;margin:26px 0 0;padding:14px 18px;border-left:5px solid var(--gold);background:#fff7e9;color:var(--muted);font-size:14px}
+    body>nav{position:sticky;top:0;z-index:10;background:rgba(255,250,240,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}body>nav .shell{display:flex;gap:22px;overflow-x:auto;padding:13px 0;scrollbar-width:none}body>nav a{flex:0 0 auto;color:var(--blue);font:600 11px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.07em;text-decoration:none;text-transform:uppercase}
+    main{background:var(--paper)}main section{padding:52px 0;border-bottom:1px solid var(--line);scroll-margin-top:52px}.section-head{display:flex;gap:12px;align-items:center;margin-bottom:18px}.section-head>div:last-child{min-width:0}.section-no{flex:0 0 100px;line-height:1.35;overflow-wrap:anywhere}.section-head h2{color:var(--blue);font-size:clamp(1.8rem,3.2vw,2.2rem);line-height:1.15;overflow-wrap:anywhere}.lead{max-width:800px;margin:10px 0 0;color:var(--muted);font-size:16px}.table-wrap{overflow-x:auto;margin:24px 0}table{width:100%;min-width:640px;border-collapse:collapse;background:rgba(255,255,255,.58)}th,td{padding:10px 12px;border:1px solid var(--line);text-align:left;vertical-align:top}th{background:#edf3f7;color:var(--blue);font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase}p code,li code,td code{padding:.12em .3em;color:var(--blue);background:#e8f3ec;font:500 .92em ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.mono{color:var(--blue);font-weight:700}pre{margin:0;padding:17px 20px;overflow-x:auto;background:var(--code);color:#e8f1f4;font:14px/1.75 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere}pre .comment{color:#9db8c2}pre .key{color:#f4c97b}.annotation,.warning,.result{margin:22px 0;padding:16px 18px;border-left:5px solid;background:#f7fbf8}.annotation{border-color:var(--gold);background:#fff7e9}.warning{border-color:var(--coral);background:#fff0ec}.result{border-color:var(--green);background:#e8f3ec}.annotation p,.warning p,.result p{margin:0}.flow{display:grid;grid-template-columns:1fr auto 1fr;gap:0;margin:22px 0}.flow>div{padding:15px 18px;border:1px solid var(--line);background:#f8fbfb}.flow .arrow{display:grid;place-items:center;padding:0 9px;border:0;background:transparent;color:var(--cyan);font:700 20px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.flow h3{margin:6px 0;color:var(--blue);font-size:17px}.flow p{margin:0;color:var(--muted);font-size:14px}.code-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0}.code-pair>article{display:flex;min-width:0;flex-direction:column;overflow:hidden;border:1px solid var(--line);background:rgba(255,255,255,.56)}.code-pair .cap{padding:12px 15px;border-bottom:1px solid var(--line)}.code-pair .cap strong{display:block;margin-top:5px;color:var(--blue);font:700 16px/1.25 Arial,Helvetica,sans-serif}.code-pair pre{flex:1}.modern{background:#e7f0f4;color:var(--ink)}.modern h2,.modern h3{color:var(--blue)}.modern h2 em{color:var(--cyan)}.modern .lead{color:var(--muted)}.modern .section-no,.modern .label{color:var(--cyan)}.modern .card,.modern table,.modern .flow>div,.modern .checklist li,.modern details,.modern .details-body{color:var(--ink);background:rgba(255,255,255,.7);border-color:var(--line)}.modern .mono{color:var(--blue)}
+    .route{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:28px;border:1px solid var(--line);background:#f8fbfb}.route>div{min-height:138px;padding:15px 16px;border-right:1px solid var(--line)}.route>div:last-child{border-right:0}.route strong{display:block;margin-top:9px;color:var(--blue);font:700 17px/1.2 Arial,Helvetica,sans-serif}.route p{margin:7px 0 0;color:var(--muted);font-size:13px;line-height:1.4}.route .select{border-top:4px solid var(--coral)}.route .filter{border-top:4px solid var(--gold)}.route .add{border-top:4px solid var(--green)}.route .drop{border-top:4px solid #8c6bb1}
+    details{margin:22px 0;border:1px solid var(--line);background:rgba(255,255,255,.7)}summary{padding:14px 18px;color:var(--blue);cursor:pointer;font-weight:700}details[open] summary{border-bottom:1px solid var(--line)}.details-body{padding:4px 18px 18px}.checklist{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0;padding:0;list-style:none}.checklist li{padding:16px;border:1px solid var(--line);border-top:4px solid var(--cyan);background:rgba(255,255,255,.7);font-size:14px}.checklist strong{display:block;margin-bottom:6px;color:var(--blue);font:700 16px/1.25 Arial,Helvetica,sans-serif}footer{padding:34px 0 56px;background:var(--paper);color:var(--muted);font-size:12px}footer p{margin:0}
+    @media(max-width:980px){body{display:block}.rail{position:static;height:auto;padding:22px 18px}.rail-intro,.rail-label,.rail-note{display:none}.rail nav{display:flex;gap:0 14px;overflow-x:auto;border-top:0}.rail nav a{min-width:max-content;padding:7px 0 8px;border-bottom:2px solid rgba(255,255,255,.12)}.rail nav .num{display:none}.shell{width:min(100% - 48px,1040px)}}@media(max-width:680px){body{background:var(--paper)}.shell{width:min(100% - 32px,1040px)}header{padding:30px 0}.lede{font-size:16px}.section-head{align-items:flex-start}.section-no{flex:0 1 44px;min-width:44px;max-width:44px}.section-head h2{font-size:25px;overflow-wrap:anywhere}.route,.code-pair,.checklist,.flow{grid-template-columns:1fr}.route>div{border-right:0;border-bottom:1px solid var(--line)}.route>div:last-child{border-bottom:0}.flow>div{border-right:1px solid var(--line)}.flow .arrow{min-height:30px;transform:rotate(90deg)}main section{padding:42px 0}pre{padding:15px;font-size:12px}}
+  </style>
+</head>
+<body>
+  <aside class="rail">
+    <div class="rail-mark">pd</div>
+    <h2>Pandas reference</h2>
+    <p class="rail-intro">Topic 07 · a compact map for understanding a dataset before analysis.</p>
+    <div class="rail-label">This topic</div>
+    <nav aria-label="Topic sections">
+      <a href="#start"><span class="num">00</span>The table</a>
+      <a href="#structure"><span class="num">01</span>Structure</a>
+      <a href="#preview"><span class="num">02</span>Preview</a>
+      <a href="#categories"><span class="num">03</span>Categories</a>
+      <a href="#summary"><span class="num">04</span>Summary</a>
+      <a href="#recall"><span class="num">05</span>Quick recall</a>
+    </nav>
+    <p class="rail-note"><strong>Reading rule:</strong> start broad with structure, then investigate values, distributions, and relationships.</p>
+  </aside>
+  <header>
+    <div class="shell">
+      <p class="eyebrow">Pandas · Topic 07 · Summary overview</p>
+      <h1>Explore the dataset <em>before the analysis.</em></h1>
+      <p class="lede">Topic 7 provides a practical first pass: inspect structure, preview rows, understand categories and frequencies, summarise distributions, and examine numerical relationships.</p>
+      <p class="hero-note"><strong>Exploration order:</strong> structure first, then sample rows, types and labels, categories and frequencies, summary statistics, and finally correlation.</p>
+    </div>
+  </header>
+  <nav aria-label="Document sections"><div class="shell">
+    <a href="#start">The table</a><a href="#structure">Structure</a><a href="#preview">Preview</a><a href="#categories">Categories</a><a href="#summary">Summary</a><a href="#recall">Recall</a>
+  </div></nav>
+  <main>
+    <section id="start"><div class="shell">
+      <div class="section-head"><div class="section-no">00 / THE TABLE</div><div><h2>One dataset, <em>many questions.</em></h2><p class="lead">The lesson’s ten-row DataFrame combines numerical, categorical, Boolean, and date information so each exploration command has a different job.</p></div></div>
+      <pre><code>df = pd.DataFrame(
+    data={
+        <span class="key">'Col1'</span>: np.random.randint(low=<span class="key">0</span>, high=<span class="key">50</span>, size=<span class="key">10</span>),
+        <span class="key">'Col2'</span>: np.random.randn(<span class="key">10</span>),
+        <span class="key">'Col3'</span>: [<span class="key">'A'</span>, <span class="key">'B'</span>, <span class="key">'C'</span>, <span class="key">'A'</span>, <span class="key">'A'</span>, <span class="key">'C'</span>, <span class="key">'D'</span>, <span class="key">'B'</span>, <span class="key">'A'</span>, <span class="key">'A'</span>],
+        <span class="key">'Col4'</span>: np.random.choice([<span class="key">True</span>, <span class="key">False</span>], size=<span class="key">10</span>),
+        <span class="key">'Col5'</span>: np.random.randint(low=<span class="key">1</span>, high=<span class="key">4</span>, size=<span class="key">10</span>)
+    },
+    index=pd.date_range(start=<span class="key">'01/01/2021'</span>, periods=<span class="key">10</span>, freq=<span class="key">'ME'</span>)
+)</code></pre>
+      <div class="route" aria-label="Topic 7 route"><div class="select"><span class="label">01 / Structure</span><strong>What is here?</strong><p><code>.info()</code>, <code>.shape</code>, <code>.dtypes</code>, and <code>.columns</code>.</p></div><div class="filter"><span class="label">02 / Preview</span><strong>What does it look like?</strong><p><code>.head()</code> and <code>.tail()</code> show the edges.</p></div><div class="add"><span class="label">03 / Categories</span><strong>What repeats?</strong><p><code>.unique()</code>, <code>.nunique()</code>, and <code>.value_counts()</code>.</p></div><div class="drop"><span class="label">04 / Summary</span><strong>What patterns appear?</strong><p><code>.describe()</code> and <code>.corr()</code>.</p></div></div>
+      <div class="warning"><p><strong>Current Pandas note:</strong> use <code>freq='ME'</code> for month-end dates in Pandas 3.0.1; the lesson’s older <code>freq='M'</code> form is no longer supported.</p></div>
+    </div></section>
+    <section id="structure"><div class="shell">
+      <div class="section-head"><div class="section-no">01 / STRUCTURE</div><div><h2>Start with the shape of the <em>whole dataset.</em></h2><p class="lead"><code>.info()</code> gives a compact report before you inspect individual values.</p></div></div>
+      <div class="code-pair">
+        <article><div class="cap"><span class="label">Whole structure</span><strong>Inspect types and missingness</strong></div><pre><code>df.info()</code></pre><div class="result"><p><strong>Shows:</strong> index, dimensions, column names, data types, non-null counts, and memory usage.</p></div></article>
+        <article><div class="cap"><span class="label">Practice</span><strong>Inspect insurance data</strong></div><pre><code>df_practice = pd.read_csv(
+    <span class="key">'insurance.csv'</span>
+)
+df_practice.info()</code></pre><div class="result"><p><strong>Question:</strong> how many rows, columns, types, non-null values, and how much memory?</p></div></article>
+      </div>
+      <pre><code>df.shape
+df.dtypes
+df.columns
+type(df.columns)
+
+df.columns.to_list()
+list(df.columns)</code></pre>
+      <div class="table-wrap"><table><thead><tr><th>Expression</th><th>Returns</th><th>Use it to ask</th></tr></thead><tbody><tr><td><code>df.shape</code></td><td>Tuple</td><td>How many rows and columns?</td></tr><tr><td><code>df.dtypes</code></td><td>Series</td><td>What type is each column?</td></tr><tr><td><code>df.columns</code></td><td>Index</td><td>What are the column labels?</td></tr><tr><td><code>df.columns.to_list()</code></td><td>Python list</td><td>How can another function receive the labels?</td></tr></tbody></table></div>
+    </div></section>
+    <section id="preview" class="modern"><div class="shell">
+      <div class="section-head"><div class="section-no">02 / PREVIEW</div><div><h2>Look at the edges without printing <em>everything.</em></h2><p class="lead"><code>.head()</code> and <code>.tail()</code> give fast visual checks of the first and last records.</p></div></div>
+      <div class="code-pair">
+        <article><div class="cap"><span class="label">Beginning</span><strong>First five or first n rows</strong></div><pre><code>df.head()
+df.head(n=<span class="key">3</span>)</code></pre><div class="result"><p><strong>Default:</strong> the first five rows. The <code>n</code> argument changes the number returned.</p></div></article>
+        <article><div class="cap"><span class="label">End</span><strong>Last five rows</strong></div><pre><code>df.tail()</code></pre><div class="result"><p><strong>Default:</strong> the last five rows. Use <code>df.tail(n=3)</code> for a different count.</p></div></article>
+      </div>
+      <div class="flow" aria-label="Preview route"><div><span class="label">Head</span><h3>Early records</h3><p>Check the first dates, labels, and values.</p></div><div class="arrow" aria-hidden="true">+</div><div><span class="label">Tail</span><h3>Recent records</h3><p>Check the final dates and whether the dataset ends as expected.</p></div></div>
+    </div></section>
+    <section id="categories"><div class="shell">
+      <div class="section-head"><div class="section-no">03 / CATEGORIES</div><div><h2>Understand what repeats, then count <em>how often.</em></h2><p class="lead">Use unique values to see the categories and frequency counts to see their distribution.</p></div></div>
+      <div class="code-pair">
+        <article><div class="cap"><span class="label">Distinct values</span><strong>List and count categories</strong></div><pre><code>df[<span class="key">'Col3'</span>].unique()
+df[<span class="key">'Col3'</span>].nunique()</code></pre><div class="result"><p><strong>For Col3:</strong> the distinct values are A, B, C, and D; the unique count is 4.</p></div></article>
+        <article><div class="cap"><span class="label">Frequencies</span><strong>Count absolute or relative levels</strong></div><pre><code>df[<span class="key">'Col3'</span>].value_counts()
+df[<span class="key">'Col3'</span>].value_counts(
+    normalize=<span class="key">True</span>
+)</code></pre><div class="result"><p><strong>Counts:</strong> A=5, B=2, C=2, D=1. Relative proportions are 0.5, 0.2, 0.2, and 0.1.</p></div></article>
+      </div>
+      <div class="annotation"><p><strong>Practice transfer:</strong> apply <code>unique()</code>, <code>nunique()</code>, and both forms of <code>value_counts()</code> to <code>df_practice['region']</code> and <code>df_practice['children']</code>.</p></div>
+      <pre><code>counts = df_practice[<span class="key">'children'</span>].value_counts()
+relative = df_practice[<span class="key">'children'</span>].value_counts(
+    normalize=<span class="key">True</span>
+)
+pd.DataFrame(counts)</code></pre>
+    </div></section>
+    <section id="summary" class="modern"><div class="shell">
+      <div class="section-head"><div class="section-no">04 / SUMMARY</div><div><h2>Summarise distributions and <em>relationships.</em></h2><p class="lead"><code>.describe()</code> summarises columns; <code>.corr()</code> compares numerical variables.</p></div></div>
+      <div class="code-pair">
+        <article><div class="cap"><span class="label">Statistics</span><strong>Numerical or all columns</strong></div><pre><code>df.describe()
+df.describe(include=<span class="key">'all'</span>)</code></pre><div class="result"><p><strong>Result:</strong> counts, means, spread, quartiles, and extremes; <code>include='all'</code> also considers categorical columns.</p></div></article>
+        <article><div class="cap"><span class="label">Correlation</span><strong>Numerical relationships</strong></div><pre><code>df.corr(
+    numeric_only=<span class="key">True</span>
+)
+df.corr(
+    method=<span class="key">'spearman'</span>,
+    numeric_only=<span class="key">True</span>
+)</code></pre><div class="result"><p><strong>Result:</strong> a correlation matrix. Pearson is linear; Spearman is monotonic.</p></div></article>
+      </div>
+      <div class="warning"><p><strong>Current Pandas compatibility:</strong> the lesson’s plain <code>df.corr()</code> includes text-like Col3 and raises a conversion error in Pandas 3.0.1. Restrict the calculation to numeric columns with <code>numeric_only=True</code>.</p></div>
+      <div class="table-wrap"><table><thead><tr><th>Command</th><th>Question answered</th></tr></thead><tbody><tr><td><code>df.describe(include='all')</code></td><td>What are the broad statistics and category summaries?</td></tr><tr><td><code>df.corr(numeric_only=True)</code></td><td>Which numerical variables move together linearly?</td></tr><tr><td><code>df.corr(method='spearman', numeric_only=True)</code></td><td>Which numerical variables move together monotonically?</td></tr></tbody></table></div>
+    </div></section>
+    <section id="recall"><div class="shell">
+      <div class="section-head"><div class="section-no">05 / QUICK RECALL</div><div><h2>Can you choose the next question <em>before the command?</em></h2><p class="lead">Try each question first. Reveal the answers only after deciding whether you need structure, a preview, category frequencies, or statistical summaries.</p></div></div>
+      <ul class="checklist"><li><strong>Structure</strong>What does <code>info()</code> reveal that a preview cannot?</li><li><strong>Categories</strong>What is the difference between <code>nunique()</code> and <code>value_counts()</code>?</li><li><strong>Relationships</strong>Why restrict <code>corr()</code> to numeric columns?</li></ul>
+      <details class="answer-check"><summary>Reveal the answers</summary><div class="details-body"><ol><li><code>info()</code> reports types, non-null counts, dimensions, and memory usage.</li><li><code>nunique()</code> returns one count of distinct values; <code>value_counts()</code> returns the frequency of each value.</li><li>The example contains text-like Col3, which cannot be converted into a numerical correlation. Use <code>numeric_only=True</code>.</li></ol></div></details>
+      <div class="table-wrap"><table><thead><tr><th>Human job</th><th>Command shape</th><th>What you get</th></tr></thead><tbody><tr><td>Inspect structure</td><td><code>df.info()</code></td><td>Types, non-null counts, dimensions, and memory.</td></tr><tr><td>Preview rows</td><td><code>df.head(n=3)</code></td><td>The first three rows.</td></tr><tr><td>Read dimensions</td><td><code>df.shape</code></td><td>A rows-and-columns tuple.</td></tr><tr><td>Read column labels</td><td><code>df.columns.to_list()</code></td><td>A Python list of names.</td></tr><tr><td>List distinct values</td><td><code>df['Col3'].unique()</code></td><td>Distinct categories.</td></tr><tr><td>Count frequencies</td><td><code>df['Col3'].value_counts(normalize=True)</code></td><td>Relative category frequencies.</td></tr><tr><td>Summarise variables</td><td><code>df.describe(include='all')</code></td><td>Descriptive statistics for all types.</td></tr><tr><td>Measure association</td><td><code>df.corr(numeric_only=True)</code></td><td>A numerical correlation matrix.</td></tr></tbody></table></div>
+    </div></section>
+  </main>
+  <footer><div class="shell"><p><span class="mono">Pandas Topic 07</span> · Initial Data Exploration · A visual summary based on the Code Institute lesson, with current Pandas compatibility notes.</p></div></footer>
+</body>
+</html>

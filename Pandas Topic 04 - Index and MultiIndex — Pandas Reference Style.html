@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A visual overview of Code Institute Pandas Topic 4: Index and MultiIndex.">
+  <title>Pandas Topic 04 — Index and MultiIndex · Pandas Reference Style</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root{--canvas:#e9f0f2;--paper:#fffaf0;--ink:#17324d;--muted:#536a78;--line:#bfd0d7;--rail:#17212b;--rail-text:#dce9ee;--rail-muted:#a8c0ca;--blue:#1f4f82;--cyan:#168aad;--gold:#f4a261;--green:#4f8f6b;--coral:#d95d39;--code:#102432;--white:#fff}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{display:grid;grid-template-columns:238px minmax(0,1fr);min-height:100vh;margin:0;color:var(--ink);background-color:var(--canvas);background-image:linear-gradient(rgba(23,50,77,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(23,50,77,.045) 1px,transparent 1px);background-size:24px 24px;font:16px/1.6 Arial,Helvetica,sans-serif}.shell{width:min(1040px,calc(100% - 72px));margin:0 auto}code,.mono,pre,nav,.eyebrow,.label,th,.section-no{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}a{color:#086b88;text-underline-offset:3px}a:hover{color:var(--coral)}
+    .rail{position:sticky;top:0;height:100vh;grid-row:span 4;overflow-y:auto;padding:30px 22px;background:var(--rail);color:var(--rail-text)}.rail-mark{display:grid;place-items:center;width:54px;height:54px;margin-bottom:18px;border:2px solid var(--cyan);border-radius:50%;color:var(--gold);font:700 18px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.rail h2{margin:0 0 6px;color:var(--white);font:700 21px/1.15 Arial,Helvetica,sans-serif}.rail p{margin:0}.rail-intro,.rail-note{color:var(--rail-muted);font-size:12px;line-height:1.55}.rail-intro{margin-bottom:22px}.rail-label{margin:20px 0 7px;color:var(--rail-muted);font:600 10px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.12em;text-transform:uppercase}.rail nav{border-top:1px solid rgba(255,255,255,.12)}.rail nav a{display:flex;gap:9px;align-items:baseline;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.07);color:var(--rail-text);font-size:12px;line-height:1.3;text-decoration:none}.rail nav .num{width:20px;flex-shrink:0;color:var(--rail-muted);font:600 10px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.rail-note{margin-top:24px;padding-top:16px;border-top:1px solid rgba(255,255,255,.12)}
+    header,nav,main,footer{grid-column:2}header{padding:48px 0 40px;background:var(--paper);border-bottom:2px solid #e0e7e8}.eyebrow,.label,.section-no{margin:0;color:var(--cyan);font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase}h1,h2,h3{margin:0;font-family:Arial,Helvetica,sans-serif}h1{max-width:760px;margin-top:10px;color:var(--blue);font-size:clamp(2.3rem,5vw,3.6rem);line-height:1.04}h1 em,h2 em{color:var(--cyan);font-style:normal;font-weight:400}.lede{max-width:800px;margin:18px 0 0;color:var(--muted);font-size:17px;line-height:1.75}.hero-note{max-width:850px;margin:26px 0 0;padding:14px 18px;border-left:5px solid var(--gold);background:#fff7e9;color:var(--muted);font-size:14px}
+    body>nav{position:sticky;top:0;z-index:10;background:rgba(255,250,240,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}body>nav .shell{display:flex;gap:22px;overflow-x:auto;padding:13px 0;scrollbar-width:none}body>nav a{flex:0 0 auto;color:var(--blue);font:600 11px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.07em;text-decoration:none;text-transform:uppercase}
+    main{background:var(--paper)}main section{padding:52px 0;border-bottom:1px solid var(--line);scroll-margin-top:52px}.section-head{display:flex;gap:12px;align-items:center;margin-bottom:18px}.section-head>div:last-child{min-width:0}.section-no{flex:0 0 58px}.section-head h2{color:var(--blue);font-size:clamp(1.8rem,3.2vw,2.2rem);line-height:1.15;overflow-wrap:anywhere}.lead{max-width:800px;margin:10px 0 0;color:var(--muted);font-size:16px}.table-wrap{overflow-x:auto;margin:24px 0}table{width:100%;min-width:640px;border-collapse:collapse;background:rgba(255,255,255,.58)}th,td{padding:10px 12px;border:1px solid var(--line);text-align:left;vertical-align:top}th{background:#edf3f7;color:var(--blue);font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase}p code,li code,td code{padding:.12em .3em;color:var(--blue);background:#e8f3ec;font:500 .92em ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.mono{color:var(--blue);font-weight:700}pre{margin:0;padding:17px 20px;overflow-x:auto;background:var(--code);color:#e8f1f4;font:14px/1.75 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere}pre .comment{color:#9db8c2}pre .key{color:#f4c97b}.annotation,.warning,.result{margin:22px 0;padding:16px 18px;border-left:5px solid;background:#f7fbf8}.annotation{border-color:var(--gold);background:#fff7e9}.warning{border-color:var(--coral);background:#fff0ec}.result{border-color:var(--green);background:#e8f3ec}.annotation p,.warning p,.result p{margin:0}.flow{display:grid;grid-template-columns:1fr auto 1fr;gap:0;margin:22px 0}.flow>div{padding:15px 18px;border:1px solid var(--line);background:#f8fbfb}.flow .arrow{display:grid;place-items:center;padding:0 9px;border:0;background:transparent;color:var(--cyan);font:700 20px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.flow h3{margin:6px 0;color:var(--blue);font-size:17px}.flow p{margin:0;color:var(--muted);font-size:14px}.code-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0}.code-pair>article{display:flex;min-width:0;flex-direction:column;overflow:hidden;border:1px solid var(--line);background:rgba(255,255,255,.56)}.code-pair .cap{padding:12px 15px;border-bottom:1px solid var(--line)}.code-pair .cap strong{display:block;margin-top:5px;color:var(--blue);font:700 16px/1.25 Arial,Helvetica,sans-serif}.code-pair pre{flex:1}.modern{background:#e7f0f4;color:var(--ink)}.modern h2,.modern h3{color:var(--blue)}.modern h2 em{color:var(--cyan)}.modern .lead{color:var(--muted)}.modern .section-no,.modern .label{color:var(--cyan)}.modern .card,.modern table,.modern .flow>div,.modern .checklist li,.modern details,.modern .details-body{color:var(--ink);background:rgba(255,255,255,.7);border-color:var(--line)}.modern .mono{color:var(--blue)}
+    details{margin:22px 0;border:1px solid var(--line);background:rgba(255,255,255,.7)}summary{padding:14px 18px;color:var(--blue);cursor:pointer;font-weight:700}details[open] summary{border-bottom:1px solid var(--line)}.details-body{padding:4px 18px 18px}.checklist{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0;padding:0;list-style:none}.checklist li{padding:16px;border:1px solid var(--line);border-top:4px solid var(--cyan);background:rgba(255,255,255,.7);font-size:14px}.checklist strong{display:block;margin-bottom:6px;color:var(--blue);font:700 16px/1.25 Arial,Helvetica,sans-serif}footer{padding:34px 0 56px;background:var(--paper);color:var(--muted);font-size:12px}footer p{margin:0}
+    @media(max-width:980px){body{display:block}.rail{position:static;height:auto;padding:22px 18px}.rail-intro,.rail-label,.rail-note{display:none}.rail nav{display:flex;gap:0 14px;overflow-x:auto;border-top:0}.rail nav a{min-width:max-content;padding:7px 0 8px;border-bottom:2px solid rgba(255,255,255,.12)}.rail nav .num{display:none}.shell{width:min(100% - 48px,1040px)}}@media(max-width:680px){body{background:var(--paper)}.shell{width:min(100% - 32px,1040px)}header{padding:30px 0}.lede{font-size:16px}.section-head{align-items:flex-start}.section-no{flex-basis:auto;min-width:44px;padding-top:4px}.section-head h2{font-size:25px;overflow-wrap:anywhere}.route,.code-pair,.checklist,.flow{grid-template-columns:1fr}.route>div{border-right:0;border-bottom:1px solid var(--line)}.route>div:last-child{border-bottom:0}.flow>div{border-right:1px solid var(--line)}.flow .arrow{min-height:30px;transform:rotate(90deg)}main section{padding:42px 0}pre{padding:15px;font-size:12px}}
+  </style>
+  <style>
+    .section-no{flex-basis:100px;line-height:1.35;overflow-wrap:anywhere}
+    @media(max-width:680px){.section-no{flex:0 1 44px;min-width:44px;max-width:44px}}
+  </style>
+</head>
+<body>
+  <aside class="rail">
+    <div class="rail-mark">pd</div>
+    <h2>Pandas reference</h2>
+    <p class="rail-intro">Topic 04 · a compact map for inspecting, changing, and flattening DataFrame index structures.</p>
+    <div class="rail-label">This topic</div>
+    <nav aria-label="Topic sections">
+      <a href="#start"><span class="num">00</span>The table</a>
+      <a href="#index"><span class="num">01</span>Index</a>
+      <a href="#single"><span class="num">02</span>Single index</a>
+      <a href="#multi"><span class="num">03</span>MultiIndex</a>
+      <a href="#recall"><span class="num">04</span>Quick recall</a>
+    </nav>
+    <p class="rail-note"><strong>Reading rule:</strong> decide what should identify a row before choosing between a default index, one label, or a label pair.</p>
+  </aside>
+  <header>
+    <div class="shell">
+      <p class="eyebrow">Pandas · Topic 04 · Summary overview</p>
+      <h1>Make the row identity <em>work for you.</em></h1>
+      <p class="lede">Topic 4 shows how to inspect an index, reset it, promote a meaningful column into it, and recognise or remove a two-level MultiIndex.</p>
+      <p class="hero-note"><strong>Index choice:</strong> a row can be identified by a default position, one meaningful label, or a combination of labels. The structure changes what the table says about each row.</p>
+    </div>
+  </header>
+  <nav aria-label="Document sections"><div class="shell">
+    <a href="#start">The table</a><a href="#index">Index</a><a href="#single">Single index</a><a href="#multi">MultiIndex</a><a href="#recall">Recall</a>
+  </div></nav>
+  <main>
+    <section id="start"><div class="shell">
+      <div class="section-head"><div class="section-no">00 / THE TABLE</div><div><h2>One table, <em>three index decisions.</em></h2><p class="lead">The lesson begins with a five-row DataFrame whose visible index labels are A to E and whose data columns are Col1 to Col4.</p></div></div>
+      <div class="table-wrap"><table><thead><tr><th></th><th>Col1</th><th>Col2</th><th>Col3</th><th>Col4</th></tr></thead><tbody><tr><th>A</th><td>2.706850</td><td>0.628133</td><td>0.907969</td><td>0.503826</td></tr><tr><th>B</th><td>0.651118</td><td>-0.319318</td><td>-0.848077</td><td>0.605965</td></tr><tr><th>C</th><td>-2.018168</td><td>0.740122</td><td>0.528813</td><td>-0.589001</td></tr><tr><th>D</th><td>0.188695</td><td>-0.758872</td><td>-0.933237</td><td>0.955057</td></tr><tr><th>E</th><td>0.190794</td><td>1.978757</td><td>2.605967</td><td>0.683509</td></tr></tbody></table></div>
+      <div class="route" aria-label="Topic 4 route"><div class="select"><span class="label">01 / Inspect</span><strong>See the index</strong><p>Use <code>df.index</code> to read the current row labels.</p></div><div class="filter"><span class="label">02 / Reset</span><strong>Change the identity</strong><p>Return or mutate a default integer index.</p></div><div class="add"><span class="label">03 / Set</span><strong>Promote a column</strong><p>Make one meaningful field the row index.</p></div><div class="drop"><span class="label">04 / MultiIndex</span><strong>Use label pairs</strong><p>Build or flatten a hierarchical index.</p></div></div>
+      <div class="annotation"><p><strong>Structure matters:</strong> the index is not just another column. It identifies rows and can be one level or several levels deep.</p></div>
+    </div></section>
+    <section id="index"><div class="shell">
+      <div class="section-head"><div class="section-no">01 / INSPECT + RESET</div><div><h2>Inspect the index, then decide what to <em>keep.</em></h2><p class="lead"><code>.index</code> exposes the current labels. <code>.reset_index()</code> can turn those labels into data or discard them.</p></div></div>
+      <pre><code>df.index</code></pre>
+      <div class="result"><p><strong>Visible result:</strong> an Index containing A, B, C, D, and E. These labels identify the rows separately from Col1 to Col4.</p></div>
+      <div class="code-pair">
+        <article><div class="cap"><span class="label">Return a new table</span><strong>Keep old labels as a column</strong></div><pre><code>df_reset = df.reset_index()
+df_reset</code></pre><div class="result"><p><strong>Result:</strong> a new DataFrame with a default 0–4 index and an <code>index</code> column containing A–E. The original <code>df</code> is unchanged.</p></div></article>
+        <article><div class="cap"><span class="label">Change in place</span><strong>Discard old labels</strong></div><pre><code>df.reset_index(
+    drop=<span class="key">True</span>,
+    inplace=<span class="key">True</span>
+)
+df</code></pre><div class="result"><p><strong>Result:</strong> the existing <code>df</code> now has integer index 0–4. A–E are not kept as a column.</p></div></article>
+      </div>
+      <div class="flow" aria-label="Reset index state change"><div><span class="label">Before</span><h3>Index A–E</h3><p>Meaningful row labels identify each row.</p></div><div class="arrow" aria-hidden="true">→</div><div><span class="label">After</span><h3>Index 0–4</h3><p>The old labels are discarded when <code>drop=True</code>.</p></div></div>
+    </div></section>
+    <section id="single" class="modern"><div class="shell">
+      <div class="section-head"><div class="section-no">02 / SINGLE INDEX</div><div><h2>Promote a column into a <em>meaningful row label.</em></h2><p class="lead">After resetting to integer positions, the lesson creates Col5 and uses its values as the single index.</p></div></div>
+      <pre><code>df[<span class="key">'Col5'</span>] = [
+    <span class="key">'Part1'</span>, <span class="key">'Part2'</span>, <span class="key">'Part3'</span>,
+    <span class="key">'Item1'</span>, <span class="key">'Item2'</span>
+]
+df</code></pre>
+      <div class="table-wrap"><table><thead><tr><th>integer index</th><th>Col1</th><th>Col2</th><th>Col3</th><th>Col4</th><th>Col5</th></tr></thead><tbody><tr><th>0</th><td>2.706850</td><td>0.628133</td><td>0.907969</td><td>0.503826</td><td>Part1</td></tr><tr><th>1</th><td>0.651118</td><td>-0.319318</td><td>-0.848077</td><td>0.605965</td><td>Part2</td></tr><tr><th>2</th><td>-2.018168</td><td>0.740122</td><td>0.528813</td><td>-0.589001</td><td>Part3</td></tr><tr><th>3</th><td>0.188695</td><td>-0.758872</td><td>-0.933237</td><td>0.955057</td><td>Item1</td></tr><tr><th>4</th><td>0.190794</td><td>1.978757</td><td>2.605967</td><td>0.683509</td><td>Item2</td></tr></tbody></table></div>
+      <pre><code>df.set_index(<span class="key">'Col5'</span>, inplace=<span class="key">True</span>)
+df</code></pre>
+      <div class="flow" aria-label="Set a single index"><div><span class="label">Before</span><h3>Col5 is a column</h3><p>Part1 to Item2 are ordinary cell values.</p></div><div class="arrow" aria-hidden="true">→</div><div><span class="label">After</span><h3>Col5 is the index</h3><p>The values label rows, and Col5 leaves the ordinary columns.</p></div></div>
+      <div class="result"><p><strong>Practical distinction:</strong> a data column stores a field; an index identifies the row. <code>inplace=True</code> changes the existing DataFrame.</p></div>
+    </div></section>
+    <section id="multi"><div class="shell">
+      <div class="section-head"><div class="section-no">03 / MULTIINDEX</div><div><h2>Use a <em>label pair</em> when one label is not enough.</h2><p class="lead">A MultiIndex has more than one level. Here, Category1 and Category2 together identify each row.</p></div></div>
+      <pre><code>np.random.seed(seed=<span class="key">13</span>)
+df = pd.DataFrame(data={
+    <span class="key">'Col1'</span>: np.random.randint(low=<span class="key">10</span>, high=<span class="key">20</span>, size=<span class="key">10</span>),
+    <span class="key">'Col2'</span>: np.random.randint(low=-<span class="key">10</span>, high=<span class="key">0</span>, size=<span class="key">10</span>),
+    <span class="key">'Category1'</span>: np.random.choice([<span class="key">'X'</span>, <span class="key">'Y'</span>, <span class="key">'Z'</span>], size=<span class="key">10</span>),
+    <span class="key">'Category2'</span>: np.random.choice(
+        [<span class="key">'a'</span>, <span class="key">'b'</span>, <span class="key">'c'</span>, <span class="key">'d'</span>, <span class="key">'e'</span>, <span class="key">'f'</span>, <span class="key">'g'</span>],
+        size=<span class="key">10</span>
+    )
+})
+df.set_index([<span class="key">'Category1'</span>, <span class="key">'Category2'</span>], inplace=<span class="key">True</span>)
+df</code></pre>
+      <div class="table-wrap"><table><thead><tr><th>Category1</th><th>Category2</th><th>Col1</th><th>Col2</th></tr></thead><tbody><tr><th>Y</th><th>e</th><td>12</td><td>-4</td></tr><tr><th>Y</th><th>f</th><td>10</td><td>-5</td></tr><tr><th>Z</th><th>d</th><td>10</td><td>-1</td></tr><tr><th>X</th><th>f</th><td>16</td><td>-6</td></tr><tr><th>X</th><th>a</th><td>12</td><td>-8</td></tr><tr><th>X</th><th>d</th><td>14</td><td>-10</td></tr><tr><th>X</th><th>c</th><td>19</td><td>-7</td></tr><tr><th>Z</th><th>a</th><td>13</td><td>-5</td></tr><tr><th>Z</th><th>f</th><td>14</td><td>-7</td></tr><tr><th>Z</th><th>b</th><td>12</td><td>-4</td></tr></tbody></table></div>
+      <div class="code-pair">
+        <article><div class="cap"><span class="label">Inspect structure</span><strong>Read the MultiIndex</strong></div><pre><code>df.index</code></pre><div class="result"><p><strong>Result:</strong> a <code>pandas.MultiIndex</code> containing pairs such as <code>('Y', 'e')</code> and <code>('X', 'f')</code>.</p></div></article>
+        <article><div class="cap"><span class="label">Inspect names</span><strong>Read the level names</strong></div><pre><code>df.index.names</code></pre><div class="result"><p><strong>Result:</strong> <code>FrozenList(['Category1', 'Category2'])</code>.</p></div></article>
+      </div>
+      <div class="annotation"><p><strong>One level versus two:</strong> a normal index gives each row one label. A MultiIndex gives each row a tuple of labels; the pair carries the hierarchy.</p></div>
+      <pre><code>df.reset_index(inplace=<span class="key">True</span>)
+df</code></pre>
+      <div class="result"><p><strong>Flattening result:</strong> Category1 and Category2 become ordinary columns again, and the DataFrame returns to a default integer index.</p></div>
+    </div></section>
+    <section id="recall" class="modern"><div class="shell">
+      <div class="section-head"><div class="section-no">04 / QUICK RECALL</div><div><h2>Can you predict the state <em>after</em> the command?</h2><p class="lead">Try each question first. Reveal the answers only after deciding whether the index is returned, changed, single-level, or hierarchical.</p></div></div>
+      <ul class="checklist"><li><strong>Inspect</strong>What does <code>df.index</code> tell you?</li><li><strong>Reset</strong>What is the difference between keeping and dropping the old index?</li><li><strong>Hierarchy</strong>What makes an index a MultiIndex?</li></ul>
+      <details class="answer-check"><summary>Reveal the answers</summary><div class="details-body"><ol><li><code>df.index</code> exposes the current index object and its labels.</li><li>Without <code>drop=True</code>, the old index becomes a column in a returned table. With <code>drop=True, inplace=True</code>, the old labels are discarded and the original table is changed.</li><li>A MultiIndex has more than one named level; each row is identified by a combination of labels.</li></ol></div></details>
+      <div class="table-wrap"><table><thead><tr><th>Human job</th><th>Command shape</th><th>What you get</th></tr></thead><tbody><tr><td>Inspect row labels</td><td><code>df.index</code></td><td>The current Index object.</td></tr><tr><td>Keep the old index as data</td><td><code>df.reset_index()</code></td><td>A returned DataFrame with the old index as a column.</td></tr><tr><td>Discard old labels</td><td><code>df.reset_index(drop=True, inplace=True)</code></td><td>The original DataFrame gets an integer index.</td></tr><tr><td>Promote one column</td><td><code>df.set_index('Col5', inplace=True)</code></td><td>Col5 becomes the single index.</td></tr><tr><td>Create two levels</td><td><code>df.set_index(['Category1', 'Category2'], inplace=True)</code></td><td>A MultiIndex made from category pairs.</td></tr><tr><td>Read level names</td><td><code>df.index.names</code></td><td>Category1 and Category2.</td></tr><tr><td>Flatten the hierarchy</td><td><code>df.reset_index(inplace=True)</code></td><td>The index levels become ordinary columns.</td></tr></tbody></table></div>
+    </div></section>
+  </main>
+  <footer><div class="shell"><p><span class="mono">Pandas Topic 04</span> · Index and MultiIndex · A visual summary based on the Code Institute lesson.</p></div></footer>
+</body>
+</html>

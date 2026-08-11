@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A visual overview of Code Institute Pandas Topic 3: selecting data with loc, iloc, Boolean filtering, and query.">
+  <title>Pandas Topic 03 — Select Data in Pandas · Pandas Reference Style</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root{--canvas:#e9f0f2;--paper:#fffaf0;--ink:#17324d;--muted:#536a78;--line:#bfd0d7;--rail:#17212b;--rail-text:#dce9ee;--rail-muted:#a8c0ca;--blue:#1f4f82;--cyan:#168aad;--gold:#f4a261;--green:#4f8f6b;--coral:#d95d39;--code:#102432;--white:#fff}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{display:grid;grid-template-columns:238px minmax(0,1fr);min-height:100vh;margin:0;color:var(--ink);background-color:var(--canvas);background-image:linear-gradient(rgba(23,50,77,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(23,50,77,.045) 1px,transparent 1px);background-size:24px 24px;font:16px/1.6 Arial,Helvetica,sans-serif}.shell{width:min(1040px,calc(100% - 72px));margin:0 auto}code,.mono,pre,nav,.eyebrow,.label,th,.section-no{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}a{color:#086b88;text-underline-offset:3px}a:hover{color:var(--coral)}
+    .rail{position:sticky;top:0;height:100vh;grid-row:span 4;overflow-y:auto;padding:30px 22px;background:var(--rail);color:var(--rail-text)}.rail-mark{display:grid;place-items:center;width:54px;height:54px;margin-bottom:18px;border:2px solid var(--cyan);border-radius:50%;color:var(--gold);font:700 18px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.rail h2{margin:0 0 6px;color:var(--white);font:700 21px/1.15 Arial,Helvetica,sans-serif}.rail p{margin:0}.rail-intro,.rail-note{color:var(--rail-muted);font-size:12px;line-height:1.55}.rail-intro{margin-bottom:22px}.rail-label{margin:20px 0 7px;color:var(--rail-muted);font:600 10px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.12em;text-transform:uppercase}.rail nav{border-top:1px solid rgba(255,255,255,.12)}.rail nav a{display:flex;gap:9px;align-items:baseline;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.07);color:var(--rail-text);font-size:12px;line-height:1.3;text-decoration:none}.rail nav .num{width:20px;flex-shrink:0;color:var(--rail-muted);font:600 10px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.rail-note{margin-top:24px;padding-top:16px;border-top:1px solid rgba(255,255,255,.12)}
+    header,nav,main,footer{grid-column:2}header{padding:48px 0 40px;background:var(--paper);border-bottom:2px solid #e0e7e8}.eyebrow,.label,.section-no{margin:0;color:var(--cyan);font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase}h1,h2,h3{margin:0;font-family:Arial,Helvetica,sans-serif}h1{max-width:760px;margin-top:10px;color:var(--blue);font-size:clamp(2.3rem,5vw,3.6rem);line-height:1.04}h1 em,h2 em{color:var(--cyan);font-style:normal;font-weight:400}.lede{max-width:800px;margin:18px 0 0;color:var(--muted);font-size:17px;line-height:1.75}.hero-note{max-width:850px;margin:26px 0 0;padding:14px 18px;border-left:5px solid var(--gold);background:#fff7e9;color:var(--muted);font-size:14px}
+    body>nav{position:sticky;top:0;z-index:10;background:rgba(255,250,240,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}body>nav .shell{display:flex;gap:22px;overflow-x:auto;padding:13px 0;scrollbar-width:none}body>nav a{flex:0 0 auto;color:var(--blue);font:600 11px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.07em;text-decoration:none;text-transform:uppercase}
+    main{background:var(--paper)}main section{padding:52px 0;border-bottom:1px solid var(--line);scroll-margin-top:52px}.section-head{display:flex;gap:12px;align-items:center;margin-bottom:18px}.section-head>div:last-child{min-width:0}.section-no{flex:0 0 58px}.section-head h2{color:var(--blue);font-size:clamp(1.8rem,3.2vw,2.2rem);line-height:1.15}.section-head h2{overflow-wrap:anywhere}.lead{max-width:800px;margin:10px 0 0;color:var(--muted);font-size:16px}.table-wrap{overflow-x:auto;margin:24px 0}table{width:100%;min-width:640px;border-collapse:collapse;background:rgba(255,255,255,.58)}th,td{padding:10px 12px;border:1px solid var(--line);text-align:left;vertical-align:top}th{background:#edf3f7;color:var(--blue);font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase}p code,li code,td code{padding:.12em .3em;color:var(--blue);background:#e8f3ec;font:500 .92em ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.mono{color:var(--blue);font-weight:700}pre{margin:0;padding:17px 20px;overflow-x:auto;background:var(--code);color:#e8f1f4;font:14px/1.75 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere}pre .comment{color:#9db8c2}pre .key{color:#f4c97b}.annotation,.warning,.result{margin:22px 0;padding:16px 18px;border-left:5px solid;background:#f7fbf8}.annotation{border-color:var(--gold);background:#fff7e9}.warning{border-color:var(--coral);background:#fff0ec}.result{border-color:var(--green);background:#e8f3ec}.annotation p,.warning p,.result p{margin:0}.flow{display:grid;grid-template-columns:1fr auto 1fr;gap:0;margin:22px 0}.flow>div{padding:15px 18px;border:1px solid var(--line);background:#f8fbfb}.flow .arrow{display:grid;place-items:center;padding:0 9px;border:0;background:transparent;color:var(--cyan);font:700 20px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.flow h3{margin:6px 0;color:var(--blue);font-size:17px}.flow p{margin:0;color:var(--muted);font-size:14px}.code-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0}.code-pair>article{display:flex;min-width:0;flex-direction:column;overflow:hidden;border:1px solid var(--line);background:rgba(255,255,255,.56)}.code-pair .cap{padding:12px 15px;border-bottom:1px solid var(--line)}.code-pair .cap strong{display:block;margin-top:5px;color:var(--blue);font:700 16px/1.25 Arial,Helvetica,sans-serif}.code-pair pre{flex:1}.modern{background:#e7f0f4;color:var(--ink)}.modern h2,.modern h3{color:var(--blue)}.modern h2 em{color:var(--cyan)}.modern .lead{color:var(--muted)}.modern .section-no,.modern .label{color:var(--cyan)}.modern .card,.modern table,.modern .flow>div,.modern .checklist li,.modern details,.modern .details-body{color:var(--ink);background:rgba(255,255,255,.7);border-color:var(--line)}.modern .mono{color:var(--blue)}
+    details{margin:22px 0;border:1px solid var(--line);background:rgba(255,255,255,.7)}summary{padding:14px 18px;color:var(--blue);cursor:pointer;font-weight:700}details[open] summary{border-bottom:1px solid var(--line)}.details-body{padding:4px 18px 18px}.checklist{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0;padding:0;list-style:none}.checklist li{padding:16px;border:1px solid var(--line);border-top:4px solid var(--cyan);background:rgba(255,255,255,.7);font-size:14px}.checklist strong{display:block;margin-bottom:6px;color:var(--blue);font:700 16px/1.25 Arial,Helvetica,sans-serif}footer{padding:34px 0 56px;background:var(--paper);color:var(--muted);font-size:12px}footer p{margin:0}
+    @media(max-width:980px){body{display:block}.rail{position:static;height:auto;padding:22px 18px}.rail-intro,.rail-label,.rail-note{display:none}.rail nav{display:flex;gap:0 14px;overflow-x:auto;border-top:0}.rail nav a{min-width:max-content;padding:7px 0 8px;border-bottom:2px solid rgba(255,255,255,.12)}.rail nav .num{display:none}.shell{width:min(100% - 48px,1040px)}}@media(max-width:680px){body{background:var(--paper)}.shell{width:min(100% - 32px,1040px)}header{padding:30px 0}.lede{font-size:16px}.section-head{align-items:flex-start}.section-no{flex-basis:auto;min-width:44px;padding-top:4px}.section-head h2{font-size:25px;overflow-wrap:anywhere}.code-pair,.checklist,.flow{grid-template-columns:1fr}.flow>div{border-right:1px solid var(--line)}.flow .arrow{min-height:30px;transform:rotate(90deg)}main section{padding:42px 0}pre{padding:15px;font-size:12px}}
+  </style>
+</head>
+<body>
+  <aside class="rail">
+    <div class="rail-mark">pd</div>
+    <h2>Pandas reference</h2>
+    <p class="rail-intro">Topic 03 · a compact map for selecting DataFrame data by label, position, or condition.</p>
+    <div class="rail-label">This topic</div>
+    <nav aria-label="Topic sections">
+      <a href="#start"><span class="num">00</span>The table</a>
+      <a href="#loc"><span class="num">01</span>loc labels</a>
+      <a href="#iloc"><span class="num">02</span>iloc positions</a>
+      <a href="#query"><span class="num">03</span>query conditions</a>
+      <a href="#recall"><span class="num">04</span>Quick recall</a>
+    </nav>
+    <p class="rail-note"><strong>Reading rule:</strong> first identify whether the task gives you a label, a position, or a condition.</p>
+  </aside>
+  <header>
+    <div class="shell">
+      <p class="eyebrow">Pandas · Topic 03 · Summary overview</p>
+      <h1>Select data by label, <em>position, or condition.</em></h1>
+      <p class="lede">Topic 3 gives you three routes into a DataFrame: locate visible labels with <code>.loc[]</code>, use integer positions with <code>.iloc[]</code>, or keep rows that satisfy a Boolean condition with <code>.query()</code>.</p>
+      <p class="hero-note"><strong>Three questions:</strong> do I know the row or column label, the zero-based position, or the condition that identifies the rows I need?</p>
+    </div>
+  </header>
+  <nav aria-label="Document sections"><div class="shell">
+    <a href="#start">The table</a><a href="#loc">loc labels</a><a href="#iloc">iloc positions</a><a href="#query">query conditions</a><a href="#recall">Recall</a>
+  </div></nav>
+  <main>
+    <section id="start"><div class="shell">
+      <div class="section-head"><div class="section-no">00 / THE TABLE</div><div><h2>One table, <em>three selection routes.</em></h2><p class="lead">The lesson works with a five-row DataFrame whose visible row labels are A to E and whose columns are Col1 to Col4.</p></div></div>
+      <div class="table-wrap"><table><thead><tr><th></th><th>Col1</th><th>Col2</th><th>Col3</th><th>Col4</th></tr></thead><tbody><tr><th>A</th><td>2.706850</td><td>0.628133</td><td>0.907969</td><td>0.503826</td></tr><tr><th>B</th><td>0.651118</td><td>-0.319318</td><td>-0.848077</td><td>0.605965</td></tr><tr><th>C</th><td>-2.018168</td><td>0.740122</td><td>0.528813</td><td>-0.589001</td></tr><tr><th>D</th><td>0.188695</td><td>-0.758872</td><td>-0.933237</td><td>0.955057</td></tr><tr><th>E</th><td>0.190794</td><td>1.978757</td><td>2.605967</td><td>0.683509</td></tr></tbody></table></div>
+      <div class="route" aria-label="Topic 3 route"><div class="select"><span class="label">01 / loc</span><strong>Use visible labels</strong><p>Choose rows and columns by names such as A or Col3.</p></div><div class="filter"><span class="label">02 / iloc</span><strong>Use positions</strong><p>Choose zero-based row and column positions.</p></div><div class="add"><span class="label">03 / query</span><strong>Use conditions</strong><p>Keep rows that satisfy a Boolean expression.</p></div></div>
+      <div class="annotation"><p><strong>Shape follows selection:</strong> a single row can become a Series, while lists and slices can preserve a DataFrame. The selector describes both what to read and the shape of the result.</p></div>
+    </div></section>
+    <section id="loc"><div class="shell">
+      <div class="section-head"><div class="section-no">01 / LABELS</div><div><h2>Use <em><code>.loc[]</code></em> when the labels are known.</h2><p class="lead">The lesson’s label-based route uses visible row labels such as A and column labels such as Col1.</p></div></div>
+      <div class="code-pair">
+        <article><div class="cap"><span class="label">One row label</span><strong>Returns a Series</strong></div><pre><code>df.loc[<span class="key">'A'</span>]</code></pre><div class="result"><p><strong>Result:</strong> row A as a Series containing Col1 to Col4. <code>type(df.loc['A'])</code> is <code>pandas.core.series.Series</code>.</p></div></article>
+        <article><div class="cap"><span class="label">Several row labels</span><strong>Returns a DataFrame</strong></div><pre><code>df.loc[[<span class="key">'A'</span>, <span class="key">'D'</span>]]</code></pre><div class="result"><p><strong>Result:</strong> a table containing rows A and D and all four columns.</p></div></article>
+      </div>
+      <div class="flow" aria-label="loc selection shapes"><div><span class="label">Label slice</span><h3><code>df.loc['A':'D']</code></h3><p>Includes A, B, C, and D. Label slices include the final label.</p></div><div class="arrow" aria-hidden="true">or</div><div><span class="label">Label lists</span><h3><code>df.loc[['A'], ['Col2', 'Col4']]</code></h3><p>Lists preserve a one-row, two-column DataFrame.</p></div></div>
+      <pre><code><span class="comment"># One cell by row label and column label</span>
+df.loc[<span class="key">'A'</span>, <span class="key">'Col1'</span>]
+
+<span class="comment"># Selected rows and selected columns</span>
+df.loc[[<span class="key">'A'</span>, <span class="key">'E'</span>], [<span class="key">'Col1'</span>, <span class="key">'Col3'</span>]]
+
+<span class="comment"># Inclusive label ranges</span>
+df.loc[<span class="key">'A'</span>:<span class="key">'C'</span>, <span class="key">'Col2'</span>:<span class="key">'Col4'</span>]</code></pre>
+      <div class="result"><p><strong>Visible practice outcomes:</strong> <code>df.loc['D', 'Col3']</code> returns <code>-0.9332372163009188</code>. <code>df.loc[['A'], ['Col2', 'Col4']]</code> returns one row and two columns.</p></div>
+      <div class="table-wrap"><table><thead><tr><th>Selection</th><th>Shape</th><th>Reason</th></tr></thead><tbody><tr><td><code>df.loc['A']</code></td><td>Series</td><td>One row label selects one one-dimensional row.</td></tr><tr><td><code>df.loc[['A', 'D']]</code></td><td>DataFrame</td><td>A list requests a table of rows.</td></tr><tr><td><code>df.loc['A', 'Col1']</code></td><td>Scalar</td><td>One row label and one column label identify one cell.</td></tr><tr><td><code>df.loc[['A'], ['Col2', 'Col4']]</code></td><td>DataFrame</td><td>Lists preserve the two-dimensional shape.</td></tr></tbody></table></div>
+    </div></section>
+    <section id="iloc" class="modern"><div class="shell">
+      <div class="section-head"><div class="section-no">02 / POSITIONS</div><div><h2>Use <em><code>.iloc[]</code></em> when the positions are known.</h2><p class="lead"><code>.iloc[]</code> uses zero-based integer positions. Position 0 is row A; column position 3 is Col4.</p></div></div>
+      <div class="code-pair">
+        <article><div class="cap"><span class="label">Individual positions</span><strong>Read a row or a cell</strong></div><pre><code>df.iloc[<span class="key">0</span>]
+df.iloc[<span class="key">0</span>, <span class="key">2</span>]</code></pre><div class="result"><p><strong>Result:</strong> the first command returns row A as a Series; the second returns the value at row position 0 and column position 2.</p></div></article>
+        <article><div class="cap"><span class="label">Position lists</span><strong>Read selected areas</strong></div><pre><code>df.iloc[[<span class="key">0</span>, <span class="key">1</span>, <span class="key">2</span>]]
+df.iloc[[<span class="key">0</span>, <span class="key">1</span>, <span class="key">2</span>], [<span class="key">2</span>, <span class="key">3</span>]]</code></pre><div class="result"><p><strong>Result:</strong> lists select several rows, or several rows and columns, by position.</p></div></article>
+      </div>
+      <pre><code><span class="comment"># Position slices: Python’s stop position is excluded</span>
+df.iloc[:<span class="key">3</span>]
+df.iloc[:<span class="key">2</span>, <span class="key">3</span>:]
+
+<span class="comment"># Practice: last three rows, last column</span>
+df.iloc[-<span class="key">3</span>:, -<span class="key">1</span>:]</code></pre>
+      <div class="table-wrap"><table><thead><tr><th></th><th>Col4</th></tr></thead><tbody><tr><th>C</th><td>-0.589001</td></tr><tr><th>D</th><td>0.955057</td></tr><tr><th>E</th><td>0.683509</td></tr></tbody></table></div>
+      <div class="annotation"><p><strong>Label versus position:</strong> <code>df.loc['A']</code> and <code>df.iloc[0]</code> can return the same row, but the first relies on the visible label and the second relies on the row’s position.</p></div>
+    </div></section>
+    <section id="query"><div class="shell">
+      <div class="section-head"><div class="section-no">03 / CONDITIONS</div><div><h2>Use <em>Boolean conditions</em> when the rows must meet a rule.</h2><p class="lead">A condition creates a True or False decision for each row. <code>.query()</code> expresses that rule as readable text and returns the matching rows.</p></div></div>
+      <div class="code-pair">
+        <article><div class="cap"><span class="label">Direct Boolean filter</span><strong>Select positive Col4 rows</strong></div><pre><code>df[df[<span class="key">'Col4'</span>] &gt; <span class="key">0</span>]</code></pre><div class="result"><p><strong>Rows kept:</strong> A, B, D, and E. Row C is excluded because Col4 is negative.</p></div></article>
+        <article><div class="cap"><span class="label">Readable query</span><strong>Express the same rule</strong></div><pre><code>df.query(<span class="key">"Col4 &gt; 0"</span>)</code></pre><div class="result"><p><strong>Rows kept:</strong> A, B, D, and E. The original <code>df</code> is unchanged.</p></div></article>
+      </div>
+      <div class="code-pair">
+        <article><div class="cap"><span class="label">Both conditions</span><strong>Use <code>and</code></strong></div><pre><code>df.query(
+    <span class="key">"Col4 &gt; 0 and Col1 &gt; 0.5"</span>
+)</code></pre><div class="result"><p><strong>Rows kept:</strong> A and B satisfy both conditions.</p></div></article>
+        <article><div class="cap"><span class="label">Either condition</span><strong>Use <code>or</code></strong></div><pre><code>df.query(
+    <span class="key">'Col2 &gt; 0.8 or Col2 &lt; 0 and Col1 &gt; 0.5'</span>
+)</code></pre><div class="result"><p><strong>Rows kept:</strong> B and E. Without parentheses, <code>and</code> is evaluated before <code>or</code>.</p></div></article>
+      </div>
+      <div class="flow" aria-label="Query precedence"><div><span class="label">Source expression</span><h3><code>Col2 &gt; 0.8 or Col2 &lt; 0 and Col1 &gt; 0.5</code></h3><p>Python evaluates the <code>and</code> part first, so B and E remain.</p></div><div class="arrow" aria-hidden="true">→</div><div><span class="label">Explicit grouping</span><h3><code>(Col2 &gt; 0.8 or Col2 &lt; 0) and Col1 &gt; 0.5</code></h3><p>The <code>or</code> group is evaluated first, then row B remains after the final restriction.</p></div></div>
+      <pre><code><span class="comment"># Final practice task from the lesson</span>
+df.query(
+    <span class="key">'(Col3 &gt; 0.4 or Col4 &gt; 0.7) and Col1 &lt; 0.2'</span>
+)</code></pre>
+      <div class="result"><p><strong>Expected result:</strong> rows C, D, and E. Parentheses make the first <code>or</code> group explicit before the final <code>and</code> condition.</p></div>
+    </div></section>
+    <section id="recall" class="modern"><div class="shell">
+      <div class="section-head"><div class="section-no">04 / QUICK RECALL</div><div><h2>Can you choose the route <em>before</em> the command?</h2><p class="lead">Try each question first. Reveal the answers only after deciding whether the task gives you labels, positions, or a condition.</p></div></div>
+      <ul class="checklist"><li><strong>Labels</strong>Which selector uses visible row and column names?</li><li><strong>Positions</strong>What does zero-based position 0 identify in this table?</li><li><strong>Conditions</strong>Why do parentheses matter when <code>or</code> and <code>and</code> are combined?</li></ul>
+      <details class="answer-check"><summary>Reveal the answers</summary><div class="details-body"><ol><li><code>.loc[]</code> uses visible labels; <code>.iloc[]</code> uses integer positions.</li><li>Position 0 is row A, and column position 0 is Col1.</li><li>They make the intended grouping explicit and prevent operator precedence from producing a different selection.</li></ol></div></details>
+      <div class="table-wrap"><table><thead><tr><th>Human job</th><th>Command shape</th><th>What you get</th></tr></thead><tbody><tr><td>Read by visible label</td><td><code>df.loc['A']</code></td><td>Row A as a Series.</td></tr><tr><td>Read a labelled cell</td><td><code>df.loc['D', 'Col3']</code></td><td>The scalar value -0.9332372163009188.</td></tr><tr><td>Read by integer position</td><td><code>df.iloc[0, 2]</code></td><td>The value at row position 0 and column position 2.</td></tr><tr><td>Keep a positional slice</td><td><code>df.iloc[-3:, -1:]</code></td><td>The last three rows of the last column.</td></tr><tr><td>Filter positive Col4 rows</td><td><code>df.query("Col4 &gt; 0")</code></td><td>A returned DataFrame containing A, B, D, and E.</td></tr><tr><td>Combine conditions</td><td><code>df.query('(A or B) and C')</code></td><td>Rows satisfying the explicitly grouped conditions.</td></tr></tbody></table></div>
+    </div></section>
+  </main>
+  <footer><div class="shell"><p><span class="mono">Pandas Topic 03</span> · Select Data in Pandas · A visual summary based on the Code Institute lesson.</p></div></footer>
+</body>
+</html>

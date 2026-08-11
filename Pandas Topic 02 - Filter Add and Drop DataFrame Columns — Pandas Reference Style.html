@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A visual overview of Code Institute Pandas Topic 2: filtering, adding, and dropping DataFrame columns and rows.">
+  <title>Pandas Topic 02 — Filter, Add and Drop DataFrame Columns · Pandas Reference Style</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root{--canvas:#e9f0f2;--paper:#fffaf0;--ink:#17324d;--muted:#536a78;--line:#bfd0d7;--rail:#17212b;--rail-text:#dce9ee;--rail-muted:#a8c0ca;--blue:#1f4f82;--cyan:#168aad;--gold:#f4a261;--green:#4f8f6b;--coral:#d95d39;--code:#102432;--white:#fff}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{display:grid;grid-template-columns:238px minmax(0,1fr);min-height:100vh;margin:0;color:var(--ink);background-color:var(--canvas);background-image:linear-gradient(rgba(23,50,77,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(23,50,77,.045) 1px,transparent 1px);background-size:24px 24px;font:16px/1.6 Arial,Helvetica,sans-serif}.shell{width:min(1040px,calc(100% - 72px));margin:0 auto}code,.mono,pre,nav,.eyebrow,.label,th,.section-no{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}a{color:#086b88;text-underline-offset:3px}a:hover{color:var(--coral)}
+    .rail{position:sticky;top:0;height:100vh;grid-row:span 4;overflow-y:auto;padding:30px 22px;background:var(--rail);color:var(--rail-text)}.rail-mark{display:grid;place-items:center;width:54px;height:54px;margin-bottom:18px;border:2px solid var(--cyan);border-radius:50%;color:var(--gold);font:700 18px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.rail h2{margin:0 0 6px;color:var(--white);font:700 21px/1.15 Arial,Helvetica,sans-serif}.rail p{margin:0}.rail-intro,.rail-note{color:var(--rail-muted);font-size:12px;line-height:1.55}.rail-intro{margin-bottom:22px}.rail-label{margin:20px 0 7px;color:var(--rail-muted);font:600 10px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.12em;text-transform:uppercase}.rail nav{border-top:1px solid rgba(255,255,255,.12)}.rail nav a{display:flex;gap:9px;align-items:baseline;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.07);color:var(--rail-text);font-size:12px;line-height:1.3;text-decoration:none}.rail nav .num{width:20px;flex-shrink:0;color:var(--rail-muted);font:600 10px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.rail-note{margin-top:24px;padding-top:16px;border-top:1px solid rgba(255,255,255,.12)}
+    header,nav,main,footer{grid-column:2}header{padding:48px 0 40px;background:var(--paper);border-bottom:2px solid #e0e7e8}.eyebrow,.label,.section-no{margin:0;color:var(--cyan);font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase}h1,h2,h3{margin:0;font-family:Arial,Helvetica,sans-serif}h1{max-width:760px;margin-top:10px;color:var(--blue);font-size:clamp(2.3rem,5vw,3.6rem);line-height:1.04}h1 em,h2 em{color:var(--cyan);font-style:normal;font-weight:400}.lede{max-width:800px;margin:18px 0 0;color:var(--muted);font-size:17px;line-height:1.75}.hero-note{max-width:850px;margin:26px 0 0;padding:14px 18px;border-left:5px solid var(--gold);background:#fff7e9;color:var(--muted);font-size:14px}
+    body>nav{position:sticky;top:0;z-index:10;background:rgba(255,250,240,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}body>nav .shell{display:flex;gap:22px;overflow-x:auto;padding:13px 0;scrollbar-width:none}body>nav a{flex:0 0 auto;color:var(--blue);font:600 11px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.07em;text-decoration:none;text-transform:uppercase}
+    main{background:var(--paper)}main section{padding:52px 0;border-bottom:1px solid var(--line);scroll-margin-top:52px}.section-head{display:flex;gap:12px;align-items:center;margin-bottom:18px}.section-head>div:last-child{min-width:0}.section-no{flex:0 0 58px}.section-head h2{color:var(--blue);font-size:clamp(1.8rem,3.2vw,2.2rem);line-height:1.15}.lead{max-width:800px;margin:10px 0 0;color:var(--muted);font-size:16px}.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}.span-4{grid-column:span 4}.span-6{grid-column:span 6}.card{min-width:0;border:1px solid var(--line);border-top:4px solid var(--cyan);background:rgba(255,255,255,.56)}.card h3{margin:8px 16px;color:var(--blue);font-size:19px;line-height:1.25}.card>p{padding:0 16px}.route{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:28px;border:1px solid var(--line);background:#f8fbfb}.route>div{min-height:138px;padding:15px 16px;border-right:1px solid var(--line)}.route>div:last-child{border-right:0}.route strong{display:block;margin-top:9px;color:var(--blue);font:700 17px/1.2 Arial,Helvetica,sans-serif}.route p{margin:7px 0 0;color:var(--muted);font-size:13px;line-height:1.4}.route .select{border-top:4px solid var(--coral)}.route .filter{border-top:4px solid var(--gold)}.route .add{border-top:4px solid var(--green)}.route .drop{border-top:4px solid #8c6bb1}
+    .table-wrap{overflow-x:auto;margin:24px 0}table{width:100%;min-width:640px;border-collapse:collapse;background:rgba(255,255,255,.58)}th,td{padding:10px 12px;border:1px solid var(--line);text-align:left;vertical-align:top}th{background:#edf3f7;color:var(--blue);font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase}p code,li code,td code{padding:.12em .3em;color:var(--blue);background:#e8f3ec;font:500 .92em ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.mono{color:var(--blue);font-weight:700}pre{margin:0;padding:17px 20px;overflow-x:auto;background:var(--code);color:#e8f1f4;font:14px/1.75 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere}pre .comment{color:#9db8c2}pre .key{color:#f4c97b}pre .name{color:#cce2e9}.annotation,.warning,.result{margin:22px 0;padding:16px 18px;border-left:5px solid;background:#f7fbf8}.annotation{border-color:var(--gold);background:#fff7e9}.warning{border-color:var(--coral);background:#fff0ec}.result{border-color:var(--green);background:#e8f3ec}.annotation p,.warning p,.result p{margin:0}.flow{display:grid;grid-template-columns:1fr auto 1fr;gap:0;margin:22px 0}.flow>div{padding:15px 18px;border:1px solid var(--line);background:#f8fbfb}.flow .arrow{display:grid;place-items:center;padding:0 9px;border:0;background:transparent;color:var(--cyan);font:700 20px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.flow h3{margin:6px 0;color:var(--blue);font-size:17px}.flow p{margin:0;color:var(--muted);font-size:14px}.code-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0}.code-pair>article{display:flex;min-width:0;flex-direction:column;overflow:hidden;border:1px solid var(--line);background:rgba(255,255,255,.56)}.code-pair .cap{padding:12px 15px;border-bottom:1px solid var(--line)}.code-pair .cap strong{display:block;margin-top:5px;color:var(--blue);font:700 16px/1.25 Arial,Helvetica,sans-serif}.code-pair pre{flex:1}.modern{background:#e7f0f4;color:var(--ink)}.modern h2,.modern h3{color:var(--blue)}.modern h2 em{color:var(--cyan)}.modern .lead{color:var(--muted)}.modern .section-no,.modern .label{color:var(--cyan)}.modern .card,.modern table,.modern .flow>div,.modern .checklist li,.modern details,.modern .details-body{color:var(--ink);background:rgba(255,255,255,.7);border-color:var(--line)}.modern .mono{color:var(--blue)}
+    details{margin:22px 0;border:1px solid var(--line);background:rgba(255,255,255,.7)}summary{padding:14px 18px;color:var(--blue);cursor:pointer;font-weight:700}details[open] summary{border-bottom:1px solid var(--line)}.details-body{padding:4px 18px 18px}.checklist{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0;padding:0;list-style:none}.checklist li{padding:16px;border:1px solid var(--line);border-top:4px solid var(--cyan);background:rgba(255,255,255,.7);font-size:14px}.checklist strong{display:block;margin-bottom:6px;color:var(--blue);font:700 16px/1.25 Arial,Helvetica,sans-serif}footer{padding:34px 0 56px;background:var(--paper);color:var(--muted);font-size:12px}footer p{margin:0}
+    @media(max-width:980px){body{display:block}.rail{position:static;height:auto;padding:22px 18px}.rail-intro,.rail-label,.rail-note{display:none}.rail nav{display:flex;gap:0 14px;overflow-x:auto;border-top:0}.rail nav a{min-width:max-content;padding:7px 0 8px;border-bottom:2px solid rgba(255,255,255,.12)}.rail nav .num{display:none}.shell{width:min(100% - 48px,1040px)}}@media(max-width:680px){body{background:var(--paper)}.shell{width:min(100% - 32px,1040px)}header{padding:30px 0}.lede{font-size:16px}.section-head{align-items:flex-start}.section-no{flex-basis:auto;min-width:44px;padding-top:4px}.section-head h2{font-size:25px;overflow-wrap:anywhere}.route,.code-pair,.checklist,.flow{grid-template-columns:1fr}.route>div{border-right:0;border-bottom:1px solid var(--line)}.route>div:last-child{border-bottom:0}.flow>div{border-right:1px solid var(--line)}.flow .arrow{min-height:30px;transform:rotate(90deg)}.span-4,.span-6{grid-column:span 12}main section{padding:42px 0}.card h3{font-size:18px}pre{padding:15px;font-size:12px}}
+  </style>
+</head>
+<body>
+  <aside class="rail">
+    <div class="rail-mark">pd</div>
+    <h2>Pandas reference</h2>
+    <p class="rail-intro">Topic 02 · a compact map for selecting, calculating, and removing DataFrame columns and rows.</p>
+    <div class="rail-label">This topic</div>
+    <nav aria-label="Topic sections">
+      <a href="#start"><span class="num">00</span>The table</a>
+      <a href="#select"><span class="num">01</span>Select</a>
+      <a href="#filter"><span class="num">02</span>Filter</a>
+      <a href="#add"><span class="num">03</span>Add</a>
+      <a href="#drop"><span class="num">04</span>Drop</a>
+      <a href="#recall"><span class="num">05</span>Quick recall</a>
+    </nav>
+    <p class="rail-note"><strong>Reading rule:</strong> first decide whether the result should be a Series, a DataFrame, or a changed table.</p>
+  </aside>
+  <header>
+    <div class="shell">
+      <p class="eyebrow">Pandas · Topic 02 · Summary overview</p>
+      <h1>Select the shape, then <em>change the table.</em></h1>
+      <p class="lede">Topic 2 teaches the everyday column operations that turn a DataFrame into a useful working table: select the right shape, calculate a new column, and remove unwanted columns or rows.</p>
+      <p class="hero-note"><strong>Returned versus changed:</strong> selecting and dropping normally return a new DataFrame. Adding a column and using <code>inplace=True</code> change the existing DataFrame.</p>
+    </div>
+  </header>
+  <nav aria-label="Document sections"><div class="shell">
+    <a href="#start">The table</a><a href="#select">Select</a><a href="#filter">Filter</a><a href="#add">Add</a><a href="#drop">Drop</a><a href="#recall">Recall</a>
+  </div></nav>
+  <main>
+    <section id="start"><div class="shell">
+      <div class="section-head"><div class="section-no">00 / THE TABLE</div><div><h2>One table, <em>four jobs.</em></h2><p class="lead">The topic continues with a five-row DataFrame whose row labels are A to E and whose columns are Col1 to Col4.</p></div></div>
+      <div class="table-wrap"><table><thead><tr><th></th><th>Col1</th><th>Col2</th><th>Col3</th><th>Col4</th></tr></thead><tbody><tr><th>A</th><td>2.706850</td><td>0.628133</td><td>0.907969</td><td>0.503826</td></tr><tr><th>B</th><td>0.651118</td><td>-0.319318</td><td>-0.848077</td><td>0.605965</td></tr><tr><th>C</th><td>-2.018168</td><td>0.740122</td><td>0.528813</td><td>-0.589001</td></tr><tr><th>D</th><td>0.188695</td><td>-0.758872</td><td>-0.933237</td><td>0.955057</td></tr><tr><th>E</th><td>0.190794</td><td>1.978757</td><td>2.605967</td><td>0.683509</td></tr></tbody></table></div>
+      <div class="route" aria-label="Topic 2 route"><div class="select"><span class="label">01 / Select</span><strong>Choose the output shape</strong><p>One bracket pair returns a Series; two pairs preserve a DataFrame.</p></div><div class="filter"><span class="label">02 / Filter</span><strong>Keep named columns</strong><p>Use <code>.filter()</code> with <code>axis=1</code> for an explicit column subset.</p></div><div class="add"><span class="label">03 / Add</span><strong>Calculate a column</strong><p>Combine aligned Series and assign the result to a new label.</p></div><div class="drop"><span class="label">04 / Drop</span><strong>Remove labels</strong><p>Drop columns with <code>axis=1</code> or rows with <code>axis=0</code>.</p></div></div>
+      <div class="annotation"><p><strong>The labels matter:</strong> <code>axis=1</code> means columns and <code>axis=0</code> means rows. Every selection or drop example below names the intended direction.</p></div>
+    </div></section>
+    <section id="select"><div class="shell">
+      <div class="section-head"><div class="section-no">01 / BRACKET SELECTION</div><div><h2>One pair or two pairs: <em>what shape do you need?</em></h2><p class="lead">The brackets are not only selecting the same data in two visual forms. They determine whether the result is a Series or a DataFrame.</p></div></div>
+      <div class="code-pair">
+        <article><div class="cap"><span class="label">One pair</span><strong>One column becomes a Series</strong></div><pre><code>col1_series = df[<span class="key">'Col1'</span>]
+col1_series</code></pre><div class="result"><p><strong>Result:</strong> a Pandas Series with index labels A to E and the Series name <code>Col1</code>.</p></div></article>
+        <article><div class="cap"><span class="label">Two pairs</span><strong>One column stays a DataFrame</strong></div><pre><code>one_col_frame = df[[<span class="key">'Col1'</span>]]
+one_col_frame</code></pre><div class="result"><p><strong>Result:</strong> a one-column DataFrame. The inner brackets hold a list of requested column names.</p></div></article>
+      </div>
+      <div class="flow" aria-label="Bracket result shapes"><div><span class="label">Series</span><h3><code>df['Col1']</code></h3><p>One column as a one-dimensional object.</p></div><div class="arrow" aria-hidden="true">or</div><div><span class="label">DataFrame</span><h3><code>df[['Col1']]</code></h3><p>One column while keeping table structure.</p></div></div>
+      <div class="code-pair">
+        <article><div class="cap"><span class="label">Several columns</span><strong>Put the labels in the inner list</strong></div><pre><code>first_two = df[[<span class="key">'Col1'</span>, <span class="key">'Col2'</span>]]
+first_two</code></pre><div class="result"><p><strong>Result:</strong> a smaller DataFrame containing Col1 and Col2.</p></div></article>
+        <article><div class="cap"><span class="label">Practice</span><strong>Grab Col2 as a Series</strong></div><pre><code>df[<span class="key">'Col2'</span>]</code></pre><div class="result"><p><strong>Result:</strong> a Series named <code>Col2</code>; the row labels remain A to E.</p></div></article>
+      </div>
+      <div class="warning"><p><strong>Bad practice:</strong> <code>df.Col1</code> may work, but bracket notation is safer and clearer. A future column name could collide with a DataFrame method or attribute.</p></div>
+    </div></section>
+    <section id="filter" class="modern"><div class="shell">
+      <div class="section-head"><div class="section-no">02 / FILTER</div><div><h2>Use <em><code>.filter()</code></em> when the column list should be explicit.</h2><p class="lead">The lesson uses <code>.filter()</code> to return DataFrame subsets. For columns, <code>axis=1</code> tells Pandas which labels to inspect.</p></div></div>
+      <div class="code-pair">
+        <article><div class="cap"><span class="label">One column</span><strong>Return a one-column DataFrame</strong></div><pre><code>col1_frame = df.filter(
+    [<span class="key">'Col1'</span>],
+    axis=<span class="key">1</span>
+)
+col1_frame</code></pre><div class="result"><p><strong>Result:</strong> a DataFrame containing Col1, not a Series.</p></div></article>
+        <article><div class="cap"><span class="label">Two columns</span><strong>Pass two labels in the list</strong></div><pre><code>first_two = df.filter(
+    [<span class="key">'Col1'</span>, <span class="key">'Col2'</span>],
+    axis=<span class="key">1</span>
+)
+first_two</code></pre><div class="result"><p><strong>Result:</strong> a DataFrame containing Col1 and Col2; the original <code>df</code> is unchanged.</p></div></article>
+      </div>
+      <div class="annotation"><p><strong>Compare the shapes:</strong> bracket notation can deliberately return either a Series or a DataFrame. The lesson’s <code>.filter()</code> examples return DataFrames because they are subsetting a table.</p></div>
+      <p>The Topic 2 practice asks for the first two columns again using this approach:</p>
+      <pre><code>df.filter([<span class="key">'Col1'</span>, <span class="key">'Col2'</span>], axis=<span class="key">1</span>)</code></pre>
+    </div></section>
+    <section id="add"><div class="shell">
+      <div class="section-head"><div class="section-no">03 / ADD</div><div><h2>Calculate a new column from <em>aligned Series.</em></h2><p class="lead">A DataFrame column is a Series. Adding two columns performs the arithmetic row by row, then assignment gives the result a new label.</p></div></div>
+      <pre><code>df[<span class="key">'Col5'</span>] = df[<span class="key">'Col1'</span>] + df[<span class="key">'Col3'</span>]
+df</code></pre>
+      <div class="flow" aria-label="Add a calculated column"><div><span class="label">Before</span><h3><code>df</code></h3><p>Five rows and four columns: Col1 to Col4.</p></div><div class="arrow" aria-hidden="true">+</div><div><span class="label">After</span><h3><code>df</code> with Col5</h3><p>Five rows and five columns. Col5 contains the row-aligned sum of Col1 and Col3.</p></div></div>
+      <div class="table-wrap"><table><thead><tr><th></th><th>Col1</th><th>Col3</th><th>Col5 = Col1 + Col3</th></tr></thead><tbody><tr><th>A</th><td>2.706850</td><td>0.907969</td><td>3.614819</td></tr><tr><th>B</th><td>0.651118</td><td>-0.848077</td><td>-0.196959</td></tr><tr><th>C</th><td>-2.018168</td><td>0.528813</td><td>-1.489355</td></tr><tr><th>D</th><td>0.188695</td><td>-0.933237</td><td>-0.744542</td></tr><tr><th>E</th><td>0.190794</td><td>2.605967</td><td>2.796761</td></tr></tbody></table></div>
+      <div class="result"><p><strong>Visible consequence:</strong> assignment changes the existing <code>df</code>. A new Series named <code>Col5</code> is added to the table.</p></div>
+    </div></section>
+    <section id="drop" class="modern"><div class="shell">
+      <div class="section-head"><div class="section-no">04 / DROP</div><div><h2>Remove columns or rows, then decide whether the result <em>replaces</em> the original.</h2><p class="lead">The <code>.drop()</code> command returns a changed DataFrame unless you reassign it or use <code>inplace=True</code>.</p></div></div>
+      <div class="code-pair">
+        <article><div class="cap"><span class="label">Return a new table</span><strong>Keep the original <code>df</code></strong></div><pre><code>without_col5 = df.drop(
+    labels=[<span class="key">'Col5'</span>],
+    axis=<span class="key">1</span>
+)
+without_col5</code></pre><div class="result"><p><strong>Consequence:</strong> <code>without_col5</code> has Col1 to Col4. The original <code>df</code> still has Col5.</p></div></article>
+        <article><div class="cap"><span class="label">Change in place</span><strong>Overwrite the existing table</strong></div><pre><code>df.drop(
+    labels=[<span class="key">'Col5'</span>],
+    axis=<span class="key">1</span>,
+    inplace=<span class="key">True</span>
+)</code></pre><div class="result"><p><strong>Consequence:</strong> the existing <code>df</code> loses Col5. There is no new DataFrame to assign.</p></div></article>
+      </div>
+      <div class="annotation"><p><strong>Reassignment is the other durable route:</strong> <code>df = df.drop(labels=['Col5'], axis=1)</code> makes the returned four-column table the object referred to by <code>df</code>.</p></div>
+      <div class="code-pair">
+        <article><div class="cap"><span class="label">Drop rows</span><strong>Rows are index labels</strong></div><pre><code>rows_removed = df.drop(
+    labels=[<span class="key">'A'</span>, <span class="key">'E'</span>],
+    axis=<span class="key">0</span>
+)
+rows_removed</code></pre><div class="result"><p><strong>Result:</strong> rows B, C, and D remain in the returned DataFrame. The original <code>df</code> still contains A and E.</p></div></article>
+        <article><div class="cap"><span class="label">Stated practice</span><strong>Drop B and C without <code>inplace</code></strong></div><pre><code>practice_df = df.drop(
+    labels=[<span class="key">'B'</span>, <span class="key">'C'</span>],
+    axis=<span class="key">0</span>
+)
+practice_df</code></pre><div class="result"><p><strong>Expected result:</strong> rows A, D, and E remain. Assignment makes the returned result durable.</p></div></article>
+      </div>
+      <div class="warning"><p><strong>Source alignment note:</strong> the LMS’s final prompt says “drop rows B and C,” but its displayed worked code drops A and E. Those are different tasks; this guide follows the written prompt in the practice card and keeps the displayed A/E example as a separate demonstration.</p></div>
+    </div></section>
+    <section id="recall" class="modern"><div class="shell">
+      <div class="section-head"><div class="section-no">05 / QUICK RECALL</div><div><h2>Can you predict the result <em>before</em> the command?</h2><p class="lead">Try each question first. Open the answers only after you have decided whether the result is a Series, a DataFrame, or a changed original table.</p></div></div>
+      <ul class="checklist"><li><strong>Shape</strong>What is the difference between <code>df['Col1']</code> and <code>df[['Col1']]</code>?</li><li><strong>Axis</strong>Which axis means columns?</li><li><strong>Mutation</strong>Does <code>drop()</code> change <code>df</code> automatically?</li></ul>
+      <details class="answer-check"><summary>Reveal the answers</summary><div class="details-body"><ol><li>One pair returns a Series; two pairs return a one-column DataFrame.</li><li><code>axis=1</code> means columns; <code>axis=0</code> means rows.</li><li>Not by default. Assign the returned result or use <code>inplace=True</code>.</li></ol></div></details>
+      <div class="table-wrap"><table><thead><tr><th>Human job</th><th>Command shape</th><th>What you get</th></tr></thead><tbody><tr><td>Read one column</td><td><code>df['Col1']</code></td><td>A Series.</td></tr><tr><td>Keep one column as a table</td><td><code>df[['Col1']]</code></td><td>A one-column DataFrame.</td></tr><tr><td>Filter named columns</td><td><code>df.filter(['Col1', 'Col2'], axis=1)</code></td><td>A returned DataFrame subset.</td></tr><tr><td>Add a calculated column</td><td><code>df['Col5'] = df['Col1'] + df['Col3']</code></td><td>The existing DataFrame gains Col5.</td></tr><tr><td>Return a table without a column</td><td><code>df.drop(labels=['Col5'], axis=1)</code></td><td>A new DataFrame; original remains unchanged.</td></tr><tr><td>Drop in place</td><td><code>df.drop(labels=['Col5'], axis=1, inplace=True)</code></td><td>The existing DataFrame loses Col5.</td></tr><tr><td>Return a table without rows</td><td><code>df.drop(labels=['B', 'C'], axis=0)</code></td><td>A new DataFrame containing the other rows.</td></tr></tbody></table></div>
+    </div></section>
+  </main>
+  <footer><div class="shell"><p><span class="mono">Pandas Topic 02</span> · Filter, Add and Drop DataFrame Columns · A visual summary based on the Code Institute lesson, with the source row-drop inconsistency made explicit.</p></div></footer>
+</body>
+</html>

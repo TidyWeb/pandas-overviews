@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A visual overview of Code Institute Pandas Topic 6: detecting, dropping, and filling missing data.">
+  <title>Pandas Topic 06 — Missing data · Pandas Reference Style</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root{--canvas:#e9f0f2;--paper:#fffaf0;--ink:#17324d;--muted:#536a78;--line:#bfd0d7;--rail:#17212b;--rail-text:#dce9ee;--rail-muted:#a8c0ca;--blue:#1f4f82;--cyan:#168aad;--gold:#f4a261;--green:#4f8f6b;--coral:#d95d39;--code:#102432;--white:#fff}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{display:grid;grid-template-columns:238px minmax(0,1fr);min-height:100vh;margin:0;color:var(--ink);background-color:var(--canvas);background-image:linear-gradient(rgba(23,50,77,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(23,50,77,.045) 1px,transparent 1px);background-size:24px 24px;font:16px/1.6 Arial,Helvetica,sans-serif}.shell{width:min(1040px,calc(100% - 72px));margin:0 auto}code,.mono,pre,nav,.eyebrow,.label,th,.section-no{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}a{color:#086b88;text-underline-offset:3px}a:hover{color:var(--coral)}
+    .rail{position:sticky;top:0;height:100vh;grid-row:span 4;overflow-y:auto;padding:30px 22px;background:var(--rail);color:var(--rail-text)}.rail-mark{display:grid;place-items:center;width:54px;height:54px;margin-bottom:18px;border:2px solid var(--cyan);border-radius:50%;color:var(--gold);font:700 18px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.rail h2{margin:0 0 6px;color:var(--white);font:700 21px/1.15 Arial,Helvetica,sans-serif}.rail p{margin:0}.rail-intro,.rail-note{color:var(--rail-muted);font-size:12px;line-height:1.55}.rail-intro{margin-bottom:22px}.rail-label{margin:20px 0 7px;color:var(--rail-muted);font:600 10px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.12em;text-transform:uppercase}.rail nav{border-top:1px solid rgba(255,255,255,.12)}.rail nav a{display:flex;gap:9px;align-items:baseline;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.07);color:var(--rail-text);font-size:12px;line-height:1.3;text-decoration:none}.rail nav .num{width:20px;flex-shrink:0;color:var(--rail-muted);font:600 10px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.rail-note{margin-top:24px;padding-top:16px;border-top:1px solid rgba(255,255,255,.12)}
+    header,nav,main,footer{grid-column:2}header{padding:48px 0 40px;background:var(--paper);border-bottom:2px solid #e0e7e8}.eyebrow,.label,.section-no{margin:0;color:var(--cyan);font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase}h1,h2,h3{margin:0;font-family:Arial,Helvetica,sans-serif}h1{max-width:760px;margin-top:10px;color:var(--blue);font-size:clamp(2.3rem,5vw,3.6rem);line-height:1.04}h1 em,h2 em{color:var(--cyan);font-style:normal;font-weight:400}.lede{max-width:800px;margin:18px 0 0;color:var(--muted);font-size:17px;line-height:1.75}.hero-note{max-width:850px;margin:26px 0 0;padding:14px 18px;border-left:5px solid var(--gold);background:#fff7e9;color:var(--muted);font-size:14px}
+    body>nav{position:sticky;top:0;z-index:10;background:rgba(255,250,240,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}body>nav .shell{display:flex;gap:22px;overflow-x:auto;padding:13px 0;scrollbar-width:none}body>nav a{flex:0 0 auto;color:var(--blue);font:600 11px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.07em;text-decoration:none;text-transform:uppercase}
+    main{background:var(--paper)}main section{padding:52px 0;border-bottom:1px solid var(--line);scroll-margin-top:52px}.section-head{display:flex;gap:12px;align-items:center;margin-bottom:18px}.section-head>div:last-child{min-width:0}.section-no{flex:0 0 100px;line-height:1.35;overflow-wrap:anywhere}.section-head h2{color:var(--blue);font-size:clamp(1.8rem,3.2vw,2.2rem);line-height:1.15;overflow-wrap:anywhere}.lead{max-width:800px;margin:10px 0 0;color:var(--muted);font-size:16px}.table-wrap{overflow-x:auto;margin:24px 0}table{width:100%;min-width:640px;border-collapse:collapse;background:rgba(255,255,255,.58)}th,td{padding:10px 12px;border:1px solid var(--line);text-align:left;vertical-align:top}th{background:#edf3f7;color:var(--blue);font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase}p code,li code,td code{padding:.12em .3em;color:var(--blue);background:#e8f3ec;font:500 .92em ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.mono{color:var(--blue);font-weight:700}pre{margin:0;padding:17px 20px;overflow-x:auto;background:var(--code);color:#e8f1f4;font:14px/1.75 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere}pre .comment{color:#9db8c2}pre .key{color:#f4c97b}.annotation,.warning,.result{margin:22px 0;padding:16px 18px;border-left:5px solid;background:#f7fbf8}.annotation{border-color:var(--gold);background:#fff7e9}.warning{border-color:var(--coral);background:#fff0ec}.result{border-color:var(--green);background:#e8f3ec}.annotation p,.warning p,.result p{margin:0}.flow{display:grid;grid-template-columns:1fr auto 1fr;gap:0;margin:22px 0}.flow>div{padding:15px 18px;border:1px solid var(--line);background:#f8fbfb}.flow .arrow{display:grid;place-items:center;padding:0 9px;border:0;background:transparent;color:var(--cyan);font:700 20px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.flow h3{margin:6px 0;color:var(--blue);font-size:17px}.flow p{margin:0;color:var(--muted);font-size:14px}.code-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0}.code-pair>article{display:flex;min-width:0;flex-direction:column;overflow:hidden;border:1px solid var(--line);background:rgba(255,255,255,.56)}.code-pair .cap{padding:12px 15px;border-bottom:1px solid var(--line)}.code-pair .cap strong{display:block;margin-top:5px;color:var(--blue);font:700 16px/1.25 Arial,Helvetica,sans-serif}.code-pair pre{flex:1}.modern{background:#e7f0f4;color:var(--ink)}.modern h2,.modern h3{color:var(--blue)}.modern h2 em{color:var(--cyan)}.modern .lead{color:var(--muted)}.modern .section-no,.modern .label{color:var(--cyan)}.modern .card,.modern table,.modern .flow>div,.modern .checklist li,.modern details,.modern .details-body{color:var(--ink);background:rgba(255,255,255,.7);border-color:var(--line)}.modern .mono{color:var(--blue)}
+    .route{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:28px;border:1px solid var(--line);background:#f8fbfb}.route>div{min-height:138px;padding:15px 16px;border-right:1px solid var(--line)}.route>div:last-child{border-right:0}.route strong{display:block;margin-top:9px;color:var(--blue);font:700 17px/1.2 Arial,Helvetica,sans-serif}.route p{margin:7px 0 0;color:var(--muted);font-size:13px;line-height:1.4}.route .select{border-top:4px solid var(--coral)}.route .filter{border-top:4px solid var(--gold)}.route .add{border-top:4px solid var(--green)}.route .drop{border-top:4px solid #8c6bb1}
+    details{margin:22px 0;border:1px solid var(--line);background:rgba(255,255,255,.7)}summary{padding:14px 18px;color:var(--blue);cursor:pointer;font-weight:700}details[open] summary{border-bottom:1px solid var(--line)}.details-body{padding:4px 18px 18px}.checklist{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0;padding:0;list-style:none}.checklist li{padding:16px;border:1px solid var(--line);border-top:4px solid var(--cyan);background:rgba(255,255,255,.7);font-size:14px}.checklist strong{display:block;margin-bottom:6px;color:var(--blue);font:700 16px/1.25 Arial,Helvetica,sans-serif}footer{padding:34px 0 56px;background:var(--paper);color:var(--muted);font-size:12px}footer p{margin:0}
+    @media(max-width:980px){body{display:block}.rail{position:static;height:auto;padding:22px 18px}.rail-intro,.rail-label,.rail-note{display:none}.rail nav{display:flex;gap:0 14px;overflow-x:auto;border-top:0}.rail nav a{min-width:max-content;padding:7px 0 8px;border-bottom:2px solid rgba(255,255,255,.12)}.rail nav .num{display:none}.shell{width:min(100% - 48px,1040px)}}@media(max-width:680px){body{background:var(--paper)}.shell{width:min(100% - 32px,1040px)}header{padding:30px 0}.lede{font-size:16px}.section-head{align-items:flex-start}.section-no{flex:0 1 44px;min-width:44px;max-width:44px}.section-head h2{font-size:25px;overflow-wrap:anywhere}.route,.code-pair,.checklist,.flow{grid-template-columns:1fr}.route>div{border-right:0;border-bottom:1px solid var(--line)}.route>div:last-child{border-bottom:0}.flow>div{border-right:1px solid var(--line)}.flow .arrow{min-height:30px;transform:rotate(90deg)}main section{padding:42px 0}pre{padding:15px;font-size:12px}}
+  </style>
+</head>
+<body>
+  <aside class="rail">
+    <div class="rail-mark">pd</div>
+    <h2>Pandas reference</h2>
+    <p class="rail-intro">Topic 06 · a compact map for diagnosing and handling missing values.</p>
+    <div class="rail-label">This topic</div>
+    <nav aria-label="Topic sections">
+      <a href="#start"><span class="num">00</span>The table</a>
+      <a href="#detect"><span class="num">01</span>Detect</a>
+      <a href="#drop"><span class="num">02</span>Drop</a>
+      <a href="#fill"><span class="num">03</span>Fill</a>
+      <a href="#propagate"><span class="num">04</span>Carry values</a>
+      <a href="#recall"><span class="num">05</span>Quick recall</a>
+    </nav>
+    <p class="rail-note"><strong>Reading rule:</strong> diagnose the missingness before deciding whether to drop, replace, or propagate values.</p>
+  </aside>
+  <header>
+    <div class="shell">
+      <p class="eyebrow">Pandas · Topic 06 · Summary overview</p>
+      <h1>Missing data needs a <em>reasoned response.</em></h1>
+      <p class="lede">Topic 6 shows how to locate missing values, remove incomplete rows or columns, replace gaps with constants or calculated values, and carry valid observations through a gap.</p>
+      <p class="hero-note"><strong>Inspect first:</strong> missing data is a business decision as well as a coding problem. Count it, understand the variable, then choose the least misleading treatment.</p>
+    </div>
+  </header>
+  <nav aria-label="Document sections"><div class="shell">
+    <a href="#start">The table</a><a href="#detect">Detect</a><a href="#drop">Drop</a><a href="#fill">Fill</a><a href="#propagate">Carry values</a><a href="#recall">Recall</a>
+  </div></nav>
+  <main>
+    <section id="start"><div class="shell">
+      <div class="section-head"><div class="section-no">00 / THE TABLE</div><div><h2>One table, <em>three missing values.</em></h2><p class="lead">The lesson uses a repeatable three-row DataFrame so each missing-data operation has a visible consequence.</p></div></div>
+      <pre><code>np.random.seed(seed=<span class="key">1</span>)
+df = pd.DataFrame(data={
+    <span class="key">'A'</span>: np.random.choice([<span class="key">1</span>, <span class="key">2</span>, <span class="key">3</span>, np.nan], size=<span class="key">3</span>),
+    <span class="key">'B'</span>: np.random.choice([<span class="key">1</span>, np.nan], size=<span class="key">3</span>),
+    <span class="key">'C'</span>: np.random.choice([<span class="key">10</span>, <span class="key">20</span>], size=<span class="key">3</span>)
+})
+df</code></pre>
+      <div class="table-wrap"><table><thead><tr><th></th><th>A</th><th>B</th><th>C</th></tr></thead><tbody><tr><th>0</th><td>2.0</td><td>1.0</td><td>20</td></tr><tr><th>1</th><td>NaN</td><td>NaN</td><td>20</td></tr><tr><th>2</th><td>1.0</td><td>NaN</td><td>20</td></tr></tbody></table></div>
+      <div class="route" aria-label="Topic 6 route"><div class="select"><span class="label">01 / Detect</span><strong>Measure the gaps</strong><p>Use <code>.isnull()</code> and <code>.sum()</code> to locate and count missing values.</p></div><div class="filter"><span class="label">02 / Drop</span><strong>Remove incomplete data</strong><p>Use <code>.dropna()</code> with direction, threshold, or subset rules.</p></div><div class="add"><span class="label">03 / Fill</span><strong>Replace missing values</strong><p>Use constants, means, or business-defined values with <code>.fillna()</code>.</p></div><div class="drop"><span class="label">04 / Carry</span><strong>Use nearby observations</strong><p>Use forward or backward fill only when the variable’s meaning supports it.</p></div></div>
+      <div class="annotation"><p><strong><code>NaN</code> is not zero:</strong> it means no value is stored for that observation. The treatment should preserve the meaning of the variable.</p></div>
+    </div></section>
+    <section id="detect"><div class="shell">
+      <div class="section-head"><div class="section-no">01 / DETECT</div><div><h2>Find the gaps before deciding what to <em>do.</em></h2><p class="lead"><code>.isnull()</code> returns a Boolean mask; adding <code>.sum()</code> turns the mask into column-level counts.</p></div></div>
+      <div class="code-pair">
+        <article><div class="cap"><span class="label">Where?</span><strong>Create a missing-value mask</strong></div><pre><code>df.isnull()</code></pre><div class="result"><p><strong>Result:</strong> True marks missing cells; False marks values that are present.</p></div></article>
+        <article><div class="cap"><span class="label">How many?</span><strong>Count by column</strong></div><pre><code>df.isnull().sum()</code></pre><div class="result"><p><strong>Result:</strong> A has 1 missing value, B has 2, and C has 0.</p></div></article>
+      </div>
+      <div class="table-wrap"><table><thead><tr><th>Column</th><th>Missing count</th><th>Meaning</th></tr></thead><tbody><tr><td>A</td><td>1</td><td>One observation has no A value.</td></tr><tr><td>B</td><td>2</td><td>Two observations have no B value.</td></tr><tr><td>C</td><td>0</td><td>Every C value is present.</td></tr></tbody></table></div>
+      <div class="annotation"><p><strong>Practice dataset:</strong> the lesson loads <code>UK_MacroDataMissingValues.csv</code> into <code>df_practice</code> and asks you to run <code>df_practice.isnull().sum()</code>. Bank Rate is recorded only when it changes, while GDP and CPI are missing for parts of 2020.</p></div>
+    </div></section>
+    <section id="drop" class="modern"><div class="shell">
+      <div class="section-head"><div class="section-no">02 / DROP</div><div><h2>Drop data with a clear <em>rule.</em></h2><p class="lead"><code>.dropna()</code> returns a changed DataFrame by default. It does not overwrite the original unless you choose to do so.</p></div></div>
+      <div class="code-pair">
+        <article><div class="cap"><span class="label">Rows</span><strong>Drop any incomplete row</strong></div><pre><code>df.dropna()</code></pre><div class="result"><p><strong>Result:</strong> only row 0 remains. The default <code>axis=0</code> means rows.</p></div></article>
+        <article><div class="cap"><span class="label">Columns</span><strong>Drop any incomplete column</strong></div><pre><code>df.dropna(axis=<span class="key">1</span>)</code></pre><div class="result"><p><strong>Result:</strong> only column C remains. <code>axis=1</code> means columns.</p></div></article>
+      </div>
+      <div class="flow" aria-label="Dropna threshold"><div><span class="label">Rule</span><h3><code>df.dropna(thresh=2)</code></h3><p>Keep rows with at least two non-missing values.</p></div><div class="arrow" aria-hidden="true">→</div><div><span class="label">Result</span><h3>Rows 0 and 2</h3><p>Row 1 has only one present value, so it is dropped.</p></div></div>
+      <div class="code-pair">
+        <article><div class="cap"><span class="label">Selected variables</span><strong>Check only A</strong></div><pre><code>df.dropna(
+    subset=[<span class="key">'A'</span>]
+)</code></pre><div class="result"><p><strong>Result:</strong> rows missing A are removed; B may still be missing.</p></div></article>
+        <article><div class="cap"><span class="label">Practice</span><strong>Target one business variable</strong></div><pre><code>df_practice.dropna(
+    subset=[
+        <span class="key">'Gross Fixed Capital Formation (Investments)'</span>
+    ]
+)</code></pre><div class="result"><p><strong>Result:</strong> rows missing that selected variable are removed from the returned DataFrame.</p></div></article>
+      </div>
+      <div class="warning"><p><strong>State reminder:</strong> without <code>inplace=True</code> or reassignment, <code>df</code> remains unchanged.</p></div>
+    </div></section>
+    <section id="fill"><div class="shell">
+      <div class="section-head"><div class="section-no">03 / FILL</div><div><h2>Replace gaps with a value that <em>means something.</em></h2><p class="lead"><code>.fillna()</code> can use a constant, a calculated value, or a domain-specific replacement. The choice can change a column’s type and interpretation.</p></div></div>
+      <div class="code-pair">
+        <article><div class="cap"><span class="label">Text constant</span><strong>Fill every gap</strong></div><pre><code>df.fillna(
+    value=<span class="key">'Constant_Value'</span>
+)</code></pre><div class="result"><p><strong>Result:</strong> missing cells show the text placeholder. Numeric columns may become object-like.</p></div></article>
+        <article><div class="cap"><span class="label">Numeric constant</span><strong>Fill with -4</strong></div><pre><code>df.fillna(value=-<span class="key">4</span>)</code></pre><div class="result"><p><strong>Result:</strong> missing cells become -4. That number is only appropriate if its meaning is defensible.</p></div></article>
+      </div>
+      <div class="flow" aria-label="Mean fill"><div><span class="label">Present A values</span><h3>2.0 and 1.0</h3><p>The mean is 1.5.</p></div><div class="arrow" aria-hidden="true">→</div><div><span class="label">Filled A</span><h3>NaN becomes 1.5</h3><p>The missing A value receives the column mean.</p></div></div>
+      <pre><code><span class="comment"># Source lesson pattern</span>
+df[<span class="key">'A'</span>].fillna(
+    value=df[<span class="key">'A'</span>].mean(),
+    inplace=<span class="key">True</span>
+)
+
+<span class="comment"># Clear assignment form</span>
+df[<span class="key">'A'</span>] = df[<span class="key">'A'</span>].fillna(
+    df[<span class="key">'A'</span>].mean()
+)</code></pre>
+      <div class="annotation"><p><strong>Practice route:</strong> for the 2019–2021 slice of <code>df_practice</code>, fill missing CPI with its local mean and fill missing <code>GDP (£ m)</code> with <code>558480</code>, then display the DataFrame.</p></div>
+      <pre><code>df_practice[<span class="key">'CPI'</span>].fillna(
+    value=df_practice[<span class="key">'CPI'</span>].mean(),
+    inplace=<span class="key">True</span>
+)
+df_practice[<span class="key">'GDP (£ m)'</span>].fillna(
+    value=<span class="key">558480</span>,
+    inplace=<span class="key">True</span>
+)
+df_practice</code></pre>
+    </div></section>
+    <section id="propagate" class="modern"><div class="shell">
+      <div class="section-head"><div class="section-no">04 / CARRY VALUES</div><div><h2>Carry a nearby value only when the <em>sequence supports it.</em></h2><p class="lead">Forward fill uses the previous valid observation; backward fill uses the next valid observation. Both are meaning-dependent decisions.</p></div></div>
+      <div class="code-pair">
+        <article><div class="cap"><span class="label">Forward</span><strong>Use the last valid value</strong></div><pre><code>df.ffill()</code></pre><div class="result"><p><strong>For this table:</strong> A row 1 becomes 2.0 and B rows 1–2 become 1.0.</p></div></article>
+        <article><div class="cap"><span class="label">Backward</span><strong>Use the next valid value</strong></div><pre><code>df.bfill()</code></pre><div class="result"><p><strong>For this table:</strong> A row 1 becomes 1.0; B stays missing because there is no later valid B value.</p></div></article>
+      </div>
+      <div class="table-wrap"><table><thead><tr><th>Method</th><th>Direction</th><th>Key limitation</th></tr></thead><tbody><tr><td><code>df.ffill()</code></td><td>Previous valid observation forward</td><td>Cannot fill a leading gap without an earlier value.</td></tr><tr><td><code>df.bfill()</code></td><td>Next valid observation backward</td><td>Cannot fill a trailing gap without a later value.</td></tr></tbody></table></div>
+      <div class="warning"><p><strong>Source-version note:</strong> the LMS writes <code>df.fillna(method='ffill')</code> and <code>df.fillna(method='bfill')</code>. In Pandas 3.0.1, that <code>method</code> argument raises a TypeError; use <code>.ffill()</code> and <code>.bfill()</code> instead.</p></div>
+    </div></section>
+    <section id="recall"><div class="shell">
+      <div class="section-head"><div class="section-no">05 / QUICK RECALL</div><div><h2>Can you choose the treatment <em>after diagnosing the gap?</em></h2><p class="lead">Try each question first. Reveal the answers only after deciding whether you are measuring, dropping, replacing, or propagating values.</p></div></div>
+      <ul class="checklist"><li><strong>Detect</strong>What does True mean in <code>df.isnull()</code>?</li><li><strong>Drop</strong>What does <code>thresh=2</code> require?</li><li><strong>Fill</strong>Why must the replacement value make business sense?</li></ul>
+      <details class="answer-check"><summary>Reveal the answers</summary><div class="details-body"><ol><li>True marks a missing cell.</li><li>At least two non-missing values must be present for the row or column to be kept.</li><li>Filling changes the data and may change its type or meaning; a constant, mean, or propagated value must be defensible for that variable.</li></ol></div></details>
+      <div class="table-wrap"><table><thead><tr><th>Human job</th><th>Command shape</th><th>What you get</th></tr></thead><tbody><tr><td>Locate missing cells</td><td><code>df.isnull()</code></td><td>A Boolean mask.</td></tr><tr><td>Count missing values</td><td><code>df.isnull().sum()</code></td><td>Totals by column.</td></tr><tr><td>Drop incomplete rows</td><td><code>df.dropna()</code></td><td>Rows with any missing value removed from the returned DataFrame.</td></tr><tr><td>Keep rows with enough values</td><td><code>df.dropna(thresh=2)</code></td><td>Rows with at least two present values.</td></tr><tr><td>Fill with a constant</td><td><code>df.fillna(value=-4)</code></td><td>Missing cells replaced with -4.</td></tr><tr><td>Fill with a mean</td><td><code>df['A'] = df['A'].fillna(df['A'].mean())</code></td><td>Missing A values receive the column mean.</td></tr><tr><td>Carry the last value forward</td><td><code>df.ffill()</code></td><td>Gaps use the previous valid observation.</td></tr><tr><td>Use the next value backward</td><td><code>df.bfill()</code></td><td>Gaps use the next valid observation.</td></tr></tbody></table></div>
+    </div></section>
+  </main>
+  <footer><div class="shell"><p><span class="mono">Pandas Topic 06</span> · Missing data · A visual summary based on the Code Institute lesson, with the Pandas 3 compatibility note made explicit.</p></div></footer>
+</body>
+</html>
